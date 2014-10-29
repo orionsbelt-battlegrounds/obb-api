@@ -1,4 +1,4 @@
-# obb-api
+# OBB API [![Build Status](https://travis-ci.org/orionsbelt-battlegrounds/obb-api.svg)](https://travis-ci.org/orionsbelt-battlegrounds/obb-api)
 
 FIXME
 
