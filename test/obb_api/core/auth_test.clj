@@ -7,5 +7,5 @@
     (let [token (auth/token-for {:user "donbonifacio"})]
       (is token)
       (testing "verify"
-        (let [result (auth/validate token)]
+        (let [result (auth/parse token)]
           (is result))))))

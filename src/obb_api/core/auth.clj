@@ -21,7 +21,8 @@
       (sign :HS256 secret)
       to-str))
 
-(defn validate
+(defn parse
   "Verifies a given token"
   [token]
-  (-> token str->jwt (verify secret)))
+  (let [raw (-> token str->jwt)]
+    [(verify raw secret) raw]))
