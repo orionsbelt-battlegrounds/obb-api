@@ -19,15 +19,13 @@
               ;; :bootstrap/interceptors []
               ::bootstrap/routes routes
 
-              ::bootstrap/secure-headers nil
-
               ;; Uncomment next line to enable CORS support, add
               ;; string(s) specifying scheme, host and port for
               ;; allowed source(s):
               ;;
               ;; "http://localhost:8080"
               ;;
-              ;;::bootstrap/allowed-origins ["scheme://host:port"]
+              ::bootstrap/allowed-origins ["http://www.orionsbelt.eu:80"]
 
               ;; Root for resource interceptor that is available by default.
               ::bootstrap/resource-path "/public"
