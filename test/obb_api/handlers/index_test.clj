@@ -7,7 +7,4 @@
 (deftest index-test
   (is (=
        (service/get-json "/")
-       {:name "obb-api"}))
-  (is (=
-       (service/get-headers "/")
-       {"Content-Type" "application/json;charset=UTF-8"})))
+       {:name "obb-api"})))
