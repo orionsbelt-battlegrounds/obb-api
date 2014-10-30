@@ -18,9 +18,15 @@
                  [org.slf4j/jul-to-slf4j "1.7.7"]
                  [org.slf4j/jcl-over-slf4j "1.7.7"]
                  [org.slf4j/log4j-over-slf4j "1.7.7"]]
+
+  :scm {:name "git"
+        :url  "git@github.com:orionsbelt-battlegrounds/obb-api.git"}
+
   :min-lein-version "2.0.0"
   :resource-paths ["config", "resources"]
-  :profiles {:dev {:aliases {"run-dev" ["trampoline" "run" "-m" "obb-api.server/run-dev"]}
+  :profiles {:dev
+             {:plugins [[com.jakemccrary/lein-test-refresh "0.5.4"]]
+              :aliases {"run-dev" ["trampoline" "run" "-m" "obb-api.server/run-dev"]}
                    :dependencies [[io.pedestal/pedestal.service-tools "0.3.1"]]}}
   :main ^{:skip-aot true} obb-api.server)
 
