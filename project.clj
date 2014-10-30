@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [io.pedestal/pedestal.service "0.3.1"]
                  [clj-time "0.8.0"]
+                 [org.clojure/data.json "0.2.5"]
 
                  ;; Remove this line and uncomment one of the next lines to
                  ;; use Tomcat or Immutant instead of Jetty:

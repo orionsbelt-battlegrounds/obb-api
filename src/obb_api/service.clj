@@ -3,16 +3,11 @@
             [io.pedestal.http.route :as route]
             [io.pedestal.http.body-params :as body-params]
             [io.pedestal.http.route.definition :refer [defroutes]]
-            [ring.util.response :as ring-resp]))
-
-(defn root
-  [request]
-  (ring-resp/response "Hello World!"))
+            [ring.util.response :as ring-resp]
+            [obb-api.handlers.index :as index]))
 
 (defroutes routes
-  [[["/" {:get root}
-     ^:interceptors [(body-params/body-params) bootstrap/html-body]
-     ]]])
+  [[["/" {:get index/handler}]]])
 
 ;; Consumed by obb-api.server/create-server
 ;; See bootstrap/default-interceptors for additional options you can configure
@@ -38,5 +33,5 @@
               ;; Either :jetty, :immutant or :tomcat (see comments in project.clj)
               ::bootstrap/type :jetty
               ;;::bootstrap/host "localhost"
-              ::bootstrap/port 8080})
+              ::bootstrap/port (Integer/parseInt (get (System/getenv) "PORT" "8080"))})
 
