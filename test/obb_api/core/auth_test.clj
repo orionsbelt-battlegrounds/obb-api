@@ -8,4 +8,6 @@
       (is token)
       (testing "verify"
         (let [result (auth/parse token)]
-          (is result))))))
+          (is result)
+          (is (auth/valid? result))
+          (is (= "donbonifacio" (auth/username result))))))))

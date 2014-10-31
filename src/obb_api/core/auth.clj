@@ -24,5 +24,14 @@
 (defn parse
   "Verifies a given token"
   [token]
-  (let [raw (-> token str->jwt)]
-    [(verify raw secret) raw]))
+  (-> token str->jwt))
+
+(defn valid?
+  "Checks if a token is valid"
+  [token]
+  (verify token secret))
+
+(defn username
+  "Gets the username of the given token"
+  [token]
+  (get-in token [:claims :iss]))
