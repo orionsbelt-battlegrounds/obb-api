@@ -22,7 +22,7 @@ Available at [api.orionsbelt.eu](http://api.orionsbelt.eu).
 {"name":"obb-api"}
 ```
 
-### `GET /auth/verify?token=:token` verifies the OBB token
+### `GET /auth/verify` verifies the OBB token
 
 Given a token, will analyse it and output information about it, for example if it's considered valid.
 
@@ -45,6 +45,6 @@ Given a token, will analyse it and output information about it, for example if i
 }
 ```
 
-### `GET /auth/enforce?token=:token` enforces the OBB token
+### `GET /auth/enforce` enforces the OBB token
 
 The same interface as `/auth/verify` but will return a *403 Forbidden* if the token is invalid.
