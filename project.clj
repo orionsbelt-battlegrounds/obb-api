@@ -7,7 +7,6 @@
                  [io.pedestal/pedestal.service "0.3.1"]
                  [clj-time "0.8.0"]
                  [clj-jwt "0.0.11"]
-                 [org.clojure/data.json "0.2.5"]
                  [environ "1.0.0"]
 
                  ;; Remove this line and uncomment one of the next lines to
