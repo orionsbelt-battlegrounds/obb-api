@@ -23,9 +23,8 @@
 (defn get-json
   "Gets a json response"
   [url]
-  (-> (get-raw url)
-      :body
-      (parse-json)))
+  (let [response (get-raw url)]
+    [(-> response :body parse-json) (response :status)]))
 
 (defn get-headers
   "Gets the response headers"

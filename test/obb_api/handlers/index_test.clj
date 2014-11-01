@@ -5,6 +5,6 @@
             [io.pedestal.http :as bootstrap]))
 
 (deftest index-test
-  (is (=
-       (service/get-json "/")
-       {:name "obb-api"})))
+  (let [[response status] (service/get-json "/")]
+    (is (= status 200))
+    (is (= response {:name "obb-api"}))))
