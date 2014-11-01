@@ -10,7 +10,7 @@
   "Build a claim to sign"
   [user]
   {:iss user
-   :exp (plus (now) (days -1))
+   :exp (plus (now) (days 10))
    :iat (now)})
 
 (defn token-for
