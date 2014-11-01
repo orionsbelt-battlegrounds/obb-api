@@ -5,7 +5,7 @@
 (defn- get-raw-token
   "Gets a token from the request"
   [context]
-  nil)
+  (get-in context [:request :params :token]))
 
 (defn- parse-token
   "Parses a token from the context"
