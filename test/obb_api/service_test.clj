@@ -13,12 +13,19 @@
   [url]
   (response-for service :get url))
 
+(defn- parse-json
+  "Parses the response json"
+  [raw]
+  (try
+    (json/read-str raw :key-fn keyword)
+    (catch Exception e (str "Error parsing JSON: " raw))))
+
 (defn get-json
   "Gets a json response"
   [url]
   (-> (get-raw url)
       :body
-      (json/read-str :key-fn keyword)))
+      (parse-json)))
 
 (defn get-headers
   "Gets the response headers"

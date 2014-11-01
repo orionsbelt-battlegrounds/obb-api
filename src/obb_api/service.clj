@@ -10,12 +10,12 @@
 
 (defroutes routes
   [[["/" {:get index/handler}
-     ^:interceptors [auth-interceptor/parse]
 
-     ["/auth/verify" {:get auth-verify/handler}]
+     ["/auth/verify" {:get auth-verify/handler}
+      ^:interceptors [auth-interceptor/parse]]
 
-     ^:interceptors [auth-interceptor/verify]
-     ]]])
+     ["/auth/enforce" {:get auth-verify/enforce}
+      ^:interceptors [auth-interceptor/enforce]]]]])
 
 ;; Consumed by obb-api.server/create-server
 ;; See bootstrap/default-interceptors for additional options you can configure

@@ -29,7 +29,9 @@
 (defn valid?
   "Checks if a token is valid"
   [token]
-  (verify token secret))
+  (if token
+    (verify token secret)
+    false))
 
 (defn username
   "Gets the username of the given token"

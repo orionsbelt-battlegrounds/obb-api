@@ -10,11 +10,20 @@
 (deftest verify-no-token-test
   (is (=
        (service/get-json "/auth/verify")
-       {:info "NoTokenFound"})))
+       {:valid false})))
 
 (deftest verify-token-test
   (let [response (service/get-json (str "/auth/verify?token=" test-token))]
     (is (get-in response [:header :alg]))
     (is (get-in response [:claims :iss]))))
 
+(deftest enforce-no-token-test
+  (is (=
+       (service/get-json "/auth/enforce")
+       {:error "Forbidden"})))
+
+(deftest enforce-token-test
+  (let [response (service/get-json (str "/auth/enforce?token=" test-token))]
+    (is (get-in response [:header :alg]))
+    (is (get-in response [:claims :iss]))))
 

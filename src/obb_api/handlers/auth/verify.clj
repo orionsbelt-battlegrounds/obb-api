@@ -9,3 +9,10 @@
   (if-let [token (auth-interceptor/token request)]
     (response/json-ok token)
     (response/json-ok {:info "NoTokenFound"})))
+
+(defn enforce
+  "Does the same as index, but it's not expected to reach this if
+  token in invalid"
+  [request]
+  (handler request))
+
