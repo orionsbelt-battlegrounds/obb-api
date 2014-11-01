@@ -12,8 +12,10 @@
 (defn- parse-token
   "Parses a token from the context"
   [context]
-  (if-let [token (get-raw-token context)]
-    (auth/parse token)))
+  (try
+    (if-let [token (get-raw-token context)]
+      (auth/parse token))
+    (catch Exception e)))
 
 (defn token
   "Gets the request's token"
