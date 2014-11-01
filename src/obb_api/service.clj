@@ -5,14 +5,17 @@
             [io.pedestal.http.route.definition :refer [defroutes]]
             [ring.util.response :as ring-resp]
             [obb-api.handlers.index :as index]
+            [obb-api.handlers.auth.verify :as auth-verify]
             [obb-api.interceptors.auth-interceptor :as auth-interceptor]))
 
 (defroutes routes
   [[["/" {:get index/handler}
      ^:interceptors [auth-interceptor/parse]
 
+     ["/auth/verify" {:get auth-verify/handler}]
+
      ^:interceptors [auth-interceptor/verify]
-     "/auth/verify" {:get index/handler}]]])
+     ]]])
 
 ;; Consumed by obb-api.server/create-server
 ;; See bootstrap/default-interceptors for additional options you can configure

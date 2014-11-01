@@ -5,18 +5,23 @@
 (defn- get-raw-token
   "Gets a token from the request"
   [context]
-  "donbonifacio")
+  nil)
 
-(defn- get-token
+(defn- parse-token
   "Parses a token from the context"
   [context]
-  #_(auth/parse (get-raw-token context))
-  "donbonifacio")
+  (if-let [token (get-raw-token context)]
+    (auth/parse token)))
+
+(defn token
+  "Gets the request's token"
+  [request]
+  (request :auth))
 
 (interceptor/defbefore parse
   "Loads and stores the token"
   [context]
-  (assoc-in context [:request :auth] (get-token context)))
+  (assoc-in context [:request :auth] (parse-token context)))
 
 (interceptor/defbefore verify
   "Verifies a request token"

@@ -5,5 +5,4 @@
 (defn handler
   "Returns the JSON of the root URL"
   [request]
-  (println request)
   (response/json-ok {:name "obb-api"}))
