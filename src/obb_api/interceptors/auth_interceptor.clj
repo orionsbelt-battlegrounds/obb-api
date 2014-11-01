@@ -20,6 +20,11 @@
   [request]
   (request :auth))
 
+(defn username
+  "Gets the request's username"
+  [request]
+  (get-in request [:auth :claims :iss]))
+
 (defn- handle-token
   "Loads and stores the token"
   [context]

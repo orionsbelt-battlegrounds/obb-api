@@ -1,11 +1,13 @@
 (ns obb-api.handlers.auth.verify-test
   (:require [clojure.test :refer :all]
             [obb-api.service-test :as service]
+            [obb-api.interceptors.auth-interceptor :as auth-interceptor]
             [obb-api.core.auth :as auth]
             [io.pedestal.test :refer :all]
             [io.pedestal.http :as bootstrap]))
 
-(def test-token (auth/token-for {:user "donbonifacio"}))
+(def username "donbonifacio")
+(def test-token (auth/token-for {:user username}))
 
 (deftest verify-no-token-test
   (let [[response status] (service/get-json "/auth/verify")]
