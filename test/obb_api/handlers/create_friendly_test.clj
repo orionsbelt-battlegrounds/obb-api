@@ -26,3 +26,19 @@
                                              data)]
     (is (= "EmptyOpponent" (response :error)))
     (is (= status 412))))
+
+(deftest create-friendly-fail-no-opponent-exists-test
+  (let [data {:challenger "Pyro" :opponent "Waza"}
+        [response status] (service/post-json "donbonifacio"
+                                             "/game/create/friendly"
+                                             data)]
+    (is (= "InvalidOpponent" (response :error)))
+    (is (= status 412))))
+
+(deftest create-friendly-fail-no-challenger-exists-test
+  (let [data {:challenger "Waza" :opponent "Pyro"}
+        [response status] (service/post-json "donbonifacio"
+                                             "/game/create/friendly"
+                                             data)]
+    (is (= "InvalidChallenger" (response :error)))
+    (is (= status 412))))
