@@ -1,7 +1,8 @@
 (ns obb-api.handlers.create-friendly
   "Creates a friendly matches bettwen two players"
   (:require [obb-api.response :as response]
-            [obb-api.gateways.player-gateway :as player-gateway]))
+            [obb-api.gateways.player-gateway :as player-gateway]
+            [obb-rules.game :as game]))
 
 (defn- challenger-name
   "Gets the challenger's name"
