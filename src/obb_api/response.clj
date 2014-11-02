@@ -10,4 +10,12 @@
 (defn json-ok
   "Returns a json response given the clojure object"
   [obj]
-  (set-headers (http/json-response obj)))
+  (-> (http/json-response obj)
+      (set-headers)))
+
+(defn json-error
+  "Returns a json response error given the clojure object"
+  [obj]
+  (-> (http/json-response obj)
+      (set-headers)
+      (assoc :status 412)))

@@ -16,7 +16,7 @@
       ^:interceptors [auth-interceptor/parse]]
 
      ["/game/create/friendly" {:post create-friendly/handler}
-      ^:interceptors [auth-interceptor/enforce]]
+      ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
      ["/auth/enforce" {:get auth-verify/enforce}
       ^:interceptors [auth-interceptor/enforce]]]]])

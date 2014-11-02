@@ -1,8 +1,8 @@
 (ns obb-api.service-test
   (:require [clojure.test :refer :all]
-            [clojure.data.json :as json]
             [io.pedestal.test :refer :all]
             [obb-api.core.auth :as auth]
+            [cheshire.core :as json]
             [io.pedestal.http :as bootstrap]
             [obb-api.service :as service]))
 
@@ -18,7 +18,7 @@
   "Parses the response json"
   [raw]
   (try
-    (json/read-str raw :key-fn keyword)
+    (json/parse-string raw (fn [k] (keyword k)))
     (catch Exception e (str "Error parsing JSON: " raw))))
 
 (defn get-json
@@ -40,8 +40,11 @@
 
 (defn post-json
   "Posts a json request"
-  [username url data]
+  [username url obj]
   (let [authed-url (add-token username url)
-        response (response-for service :post authed-url data)]
+        data (json/generate-string obj)
+        response (response-for service :post authed-url
+                                       :body data
+                                       :headers {"Content-Type" "application/json"})]
     [(-> response :body parse-json) (response :status)]))
 
