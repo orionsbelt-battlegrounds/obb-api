@@ -5,6 +5,7 @@
             [io.pedestal.http.route.definition :refer [defroutes]]
             [ring.util.response :as ring-resp]
             [obb-api.handlers.index :as index]
+            [obb-api.handlers.create-friendly :as create-friendly]
             [obb-api.handlers.auth.verify :as auth-verify]
             [obb-api.interceptors.auth-interceptor :as auth-interceptor]))
 
@@ -13,6 +14,9 @@
 
      ["/auth/verify" {:get auth-verify/handler}
       ^:interceptors [auth-interceptor/parse]]
+
+     ["/game/create/friendly" {:post create-friendly/handler}
+      ^:interceptors [auth-interceptor/enforce]]
 
      ["/auth/enforce" {:get auth-verify/enforce}
       ^:interceptors [auth-interceptor/enforce]]]]])

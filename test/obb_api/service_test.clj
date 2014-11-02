@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [clojure.data.json :as json]
             [io.pedestal.test :refer :all]
+            [obb-api.core.auth :as auth]
             [io.pedestal.http :as bootstrap]
             [obb-api.service :as service]))
 
@@ -31,4 +32,16 @@
   [url]
   (-> (get-raw url)
       :headers))
+
+(defn add-token
+  "Adds a valid auth token to a given URL"
+  [username url]
+  (str url "?token=" (auth/token-for {:user username})))
+
+(defn post-json
+  "Posts a json request"
+  [username url data]
+  (let [authed-url (add-token username url)
+        response (response-for service :post authed-url data)]
+    [(-> response :body parse-json) (response :status)]))
 
