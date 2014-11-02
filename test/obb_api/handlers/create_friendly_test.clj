@@ -4,7 +4,7 @@
             [io.pedestal.test :refer :all]
             [io.pedestal.http :as bootstrap]))
 
-(deftest create-friendly-smoke-test
+(deftest create-friendly-test
   (let [data {:challenger "donbonifacio" :opponent "Pyro"}
         [response status] (service/post-json "donbonifacio"
                                              "/game/create/friendly"

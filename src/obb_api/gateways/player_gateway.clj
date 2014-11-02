@@ -6,7 +6,7 @@
   {:donbonifacio {:name "donbonifacio"}
    :Pyro {:name "Pyro"}})
 
-(defn find
+(defn find-players
   "Finds player by the given names"
   [names]
   (println (get-in db [(keyword (first names))]))

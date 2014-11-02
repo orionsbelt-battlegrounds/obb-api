@@ -29,15 +29,21 @@
     (nil? challenger) "InvalidChallenger"
     (nil? opponent) "InvalidOpponent"))
 
+(defn- save-game
+  "Saves a game"
+  [challenger opponent battle]
+  (response/json-ok {}))
+
 (defn- create-game
   "Creates the game"
   [request]
   (let [p1 (challenger-name request)
         p2 (opponent-name request)
-        [challenger opponent] (player-gateway/find [p1 p2])]
+        [challenger opponent] (player-gateway/find-players [p1 p2])
+        battle (game/random)]
     (if-let [error (validate request challenger opponent)]
       (response/json-error {:error error})
-      (response/json-ok {} ))))
+      (save-game challenger opponent battle))))
 
 (defn handler
   "Creates a friendly match"
