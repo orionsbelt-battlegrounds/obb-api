@@ -2,13 +2,23 @@
   "Creates a friendly matches bettwen two players"
   (:require [obb-api.response :as response]))
 
+(defn- challenger-name
+  "Gets the challenger's name"
+  [request]
+  (get-in request [:json-params :challenger]))
+
+(defn- opponent-name
+  "Gets the opponent's name"
+  [request]
+  (get-in request [:json-params :opponent]))
+
 (defn- find-request-error
   "Tries to find errors on the request"
   [request]
   (cond
     (nil? (request :json-params)) "InvalidJSON"
-    (nil? (get-in request [:json-params :opponent])) "EmptyOpponent"
-    (nil? (get-in request [:json-params :challenger])) "EmptyChallenger"))
+    (nil? (opponent-name request)) "EmptyOpponent"
+    (nil? (challenger-name request)) "EmptyChallenger"))
 
 (defn handler
   "Creates a friendly match"
