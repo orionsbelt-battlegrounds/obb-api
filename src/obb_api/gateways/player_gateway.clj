@@ -9,6 +9,5 @@
 (defn find-players
   "Finds player by the given names"
   [names]
-  (println (get-in db [(keyword (first names))]))
   (map #(db (keyword %)) names))
 

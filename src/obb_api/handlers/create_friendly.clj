@@ -33,9 +33,10 @@
 (defn- save-game
   "Saves a game"
   [challenger opponent battle]
-  (response/json-ok (battle-gateway/create-battle {:p1 challenger
-                                                   :p2 opponent
-                                                   :battle battle})))
+  (let [saved (battle-gateway/create-battle {:p1 challenger
+                                             :p2 opponent
+                                             :battle battle})]
+    (response/json-ok saved)))
 
 (defn- create-game
   "Creates the game"
