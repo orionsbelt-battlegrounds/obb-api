@@ -2,6 +2,7 @@
   "Creates a friendly matches bettwen two players"
   (:require [obb-api.response :as response]
             [obb-api.gateways.player-gateway :as player-gateway]
+            [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-rules.game :as game]))
 
 (defn- challenger-name
@@ -32,7 +33,9 @@
 (defn- save-game
   "Saves a game"
   [challenger opponent battle]
-  (response/json-ok {}))
+  (response/json-ok (battle-gateway/create-battle {:p1 challenger
+                                                   :p2 opponent
+                                                   :battle battle})))
 
 (defn- create-game
   "Creates the game"
