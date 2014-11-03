@@ -6,3 +6,8 @@
   "Persist battle"
   [args]
   (mongodb/create-battle args))
+
+(defn load-battle
+  "Loads a persisted battle"
+  [id]
+  nil)

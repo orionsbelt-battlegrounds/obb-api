@@ -22,3 +22,10 @@
   (-> (http/json-response obj)
       (set-headers)
       (assoc :status 412)))
+
+(defn json-not-found
+  "Returns a not tound error"
+  []
+  (-> (http/json-response {:error "NotFound"})
+      (set-headers)
+      (assoc :status 404)))

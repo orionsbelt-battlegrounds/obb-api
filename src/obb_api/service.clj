@@ -6,6 +6,7 @@
             [ring.util.response :as ring-resp]
             [obb-api.handlers.index :as index]
             [obb-api.handlers.create-friendly :as create-friendly]
+            [obb-api.handlers.show-game :as show-game]
             [obb-api.handlers.auth.verify :as auth-verify]
             [obb-api.interceptors.auth-interceptor :as auth-interceptor]))
 
@@ -17,6 +18,9 @@
 
      ["/game/create/friendly" {:post create-friendly/handler}
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
+
+     ["/game/:id" {:get show-game/handler}
+      ^:interceptors [auth-interceptor/parse]]
 
      ["/auth/enforce" {:get auth-verify/enforce}
       ^:interceptors [auth-interceptor/enforce]]]]])
