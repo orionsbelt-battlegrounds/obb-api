@@ -10,4 +10,4 @@
 (defn load-battle
   "Loads a persisted battle"
   [id]
-  nil)
+  (mongodb/load-battle id))

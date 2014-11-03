@@ -27,3 +27,10 @@
   [args]
   (-> (db)
       (mc/insert-and-return "battles" (build args))))
+
+(defn load-battle
+  "Loads a persisted battle"
+  [id]
+  (println "-----------")
+  (println id)
+  nil)

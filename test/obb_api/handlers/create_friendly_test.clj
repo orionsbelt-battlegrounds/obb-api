@@ -4,11 +4,17 @@
             [io.pedestal.test :refer :all]
             [io.pedestal.http :as bootstrap]))
 
-(deftest create-friendly-test
-  (let [data {:challenger "donbonifacio" :opponent "Pyro"}
+(defn create-dummy-game
+  "Creates a dummy random game"
+  [challenger opponent]
+  (let [data {:challenger challenger :opponent opponent}
         [response status] (service/post-json "donbonifacio"
                                              "/game/create/friendly"
                                              data)]
+    [response status]))
+
+(deftest create-friendly-test
+  (let [[response status] (create-dummy-game "donbonifacio" "Pyro")]
     (is (= status 200))
     (is (response :starting_stash))))
 

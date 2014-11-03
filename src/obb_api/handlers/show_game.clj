@@ -13,8 +13,10 @@
 (defn handler
   "Shows a game's info"
   [request]
-  (let [battle-id (get-in request [:params :id])
+  (println request)
+  (let [battle-id (get-in request [:path-params :id])
         battle (battle-gateway/load-battle battle-id)]
+    (println battle-id)
     (if battle
       (response/json-ok (prepare-battle request battle))
       (response/json-not-found))))
