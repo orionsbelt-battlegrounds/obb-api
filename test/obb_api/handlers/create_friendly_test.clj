@@ -9,7 +9,8 @@
         [response status] (service/post-json "donbonifacio"
                                              "/game/create/friendly"
                                              data)]
-    (is (= status 200))))
+    (is (= status 200))
+    (is (response :starting_stash))))
 
 (deftest create-friendly-fail-no-challenger-test
   (let [data {:opponent "Pyro"}
