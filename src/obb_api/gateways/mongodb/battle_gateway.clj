@@ -1,11 +1,12 @@
 (ns obb-api.gateways.mongodb.battle-gateway
   "Persists battles on mongodb"
   (:require [monger.core :as mg]
+            [environ.core :refer [env]]
             [monger.collection :as mc])
   (:import [org.bson.types ObjectId]
-                      [com.mongodb DB WriteConcern]))
+           [com.mongodb DB WriteConcern]))
 
-(def mongodb-uri "mongodb://127.0.0.1/obb")
+(def mongodb-uri (or (env :mongosoup-url) "mongodb://127.0.0.1/obb"))
 
 (defn- db
   "Gets the current DB to handle"
