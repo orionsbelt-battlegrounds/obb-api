@@ -1,6 +1,7 @@
 (ns obb-api.handlers.show-game
   "Shows the information about the given game"
   (:require [obb-api.response :as response]
+            [obb-api.interceptors.auth-interceptor :as auth-interceptor]
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-rules.game :as game]))
@@ -29,7 +30,10 @@
   "Shows a game's info"
   [request]
   (let [battle-id (get-in request [:path-params :id])
-        game (battle-gateway/load-battle battle-id)]
+        game (battle-gateway/load-battle battle-id)
+        username (auth-interceptor/username request)]
     (if game
-      (response/json-ok (prepare-game request game))
+      (-> (prepare-game request game)
+          (assoc :viewed-by username)
+          (response/json-ok))
       (response/json-not-found))))
