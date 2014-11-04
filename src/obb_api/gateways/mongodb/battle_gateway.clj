@@ -20,7 +20,7 @@
   {:p1 (args :p1)
    :p2 (args :p2)
    :battle (args :battle)
-   :starting_stash (get-in args [:battle :stash])})
+   :starting-stash (get-in args [:battle :stash])})
 
 (defn create-battle
   "Creates a battle"
@@ -31,6 +31,6 @@
 (defn load-battle
   "Loads a persisted battle"
   [id]
-  (println "-----------")
-  (println id)
-  nil)
+  (when (ObjectId/isValid id)
+    (-> (db)
+        (mc/find-one-as-map "battles" {:_id (ObjectId. id)}))))

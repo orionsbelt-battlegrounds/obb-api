@@ -4,6 +4,7 @@
 (def db
   "Memory store"
   {:donbonifacio {:name "donbonifacio"}
+   :ShadowKnight {:name "ShadowKnight"}
    :Pyro {:name "Pyro"}})
 
 (defn find-players

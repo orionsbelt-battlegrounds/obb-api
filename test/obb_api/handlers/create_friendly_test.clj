@@ -10,13 +10,13 @@
   (let [data {:challenger challenger :opponent opponent}
         [response status] (service/post-json "donbonifacio"
                                              "/game/create/friendly"
-                                             data)]
+                                            data)]
     [response status]))
 
 (deftest create-friendly-test
   (let [[response status] (create-dummy-game "donbonifacio" "Pyro")]
     (is (= status 200))
-    (is (response :starting_stash))))
+    (is (response :starting-stash))))
 
 (deftest create-friendly-fail-no-challenger-test
   (let [data {:opponent "Pyro"}
