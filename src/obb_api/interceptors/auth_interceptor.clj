@@ -22,11 +22,6 @@
   [request]
   (request :auth))
 
-(defn username
-  "Gets the request's username"
-  [request]
-  (get-in request [:auth :claims :iss]))
-
 (defn- handle-token
   "Loads and stores the token"
   [context]
@@ -42,8 +37,16 @@
 
 (defn- valid-token?
   "Checks if the token is present and valid"
-  [context]
-  (= true (get-in context [:request :auth :valid])))
+  [context_or_request]
+  (or
+    (= true (get-in context_or_request [:request :auth :valid]))
+    (= true (get-in context_or_request [:auth :valid]))))
+
+(defn username
+  "Gets the request's username"
+  [request]
+  (when (valid-token? request)
+    (get-in request [:auth :claims :iss])))
 
 (interceptor/defbefore enforce
   "Enforces a request token"
