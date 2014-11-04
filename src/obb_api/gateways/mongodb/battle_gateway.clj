@@ -7,6 +7,7 @@
            [com.mongodb DB WriteConcern]))
 
 (def mongodb-uri (or (env :mongosoup-url) "mongodb://127.0.0.1/obb"))
+(def collection-name "battles")
 
 (defn- db
   "Gets the current DB to handle"
@@ -26,11 +27,11 @@
   "Creates a battle"
   [args]
   (-> (db)
-      (mc/insert-and-return "battles" (build args))))
+      (mc/insert-and-return collection-name (build args))))
 
 (defn load-battle
   "Loads a persisted battle"
   [id]
   (when (ObjectId/isValid id)
     (-> (db)
-        (mc/find-one-as-map "battles" {:_id (ObjectId. id)}))))
+        (mc/find-one-as-map collection-name {:_id (ObjectId. id)}))))
