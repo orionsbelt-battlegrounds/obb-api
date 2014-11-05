@@ -27,8 +27,8 @@
 
 (deftest enforce-no-token-test
   (let [[response status] (service/get-json "/auth/enforce")]
-    (is (= status 403))
-    (is (= response {:error "Forbidden"}))))
+    (is (= status 401))
+    (is (= response {:error "Unauthorized"}))))
 
 (deftest enforce-token-test
   (let [[response status] (service/get-json (str "/auth/enforce?token=" test-token))]

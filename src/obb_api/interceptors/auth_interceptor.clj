@@ -55,6 +55,6 @@
     (if (valid-token? parsed-context)
       parsed-context
       (-> context
-          (assoc :response {:status  403
-                            :body    "{\"error\":\"Forbidden\"}"})
+          (assoc :response {:status  401
+                            :body    "{\"error\":\"Unauthorized\"}"})
           (interceptor-impl/terminate)))))
