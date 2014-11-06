@@ -121,4 +121,4 @@ Given a token, will analyse it and output information about it, for example if i
 
 ### `GET /auth/enforce` enforces the OBB token
 
-The same interface as `/auth/verify` but will return a *403 Forbidden* if the token is invalid.
+The same interface as `/auth/verify` but will return a *401 Unauthorized* if the token is invalid.
