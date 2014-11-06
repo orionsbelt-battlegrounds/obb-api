@@ -22,6 +22,34 @@ Available at [api.orionsbelt.eu](http://api.orionsbelt.eu).
 {"name":"obb-api"}
 ```
 
+### `GET /game/:id`
+
+Gets the game with the given `id`. If the game is in _deploy_ state, then the _stash_ and _elements_ will be removed, to prevent a player to have information about the opponent's deploy before time. However, if you pass
+the player's token, the information specific to the given player will be present.
+
+```
+> curl http://api.orionsbelt.eu/game/545790d6e4b0406f6fc19315
+```
+```javascript
+{  
+   "viewed-by":null,
+   "_id":"545790d6e4b0406f6fc19315",
+   "battle":{  
+      "state":"deploy",
+      "stash":{
+          "p2":{},
+          "p1":{}
+      },
+      "width":8,
+      "height":8,
+      "terrain":"rock",
+      "elements":{}
+   },
+   "p2":{ "name":"Pyro" },
+   "p1":{ "name":"donbonifacio" }
+}
+```
+
 ### `POST /game/create/friendly` creates a friendly match
 
 Creates a match bettween two players. Returns the board ready to be deployed.
