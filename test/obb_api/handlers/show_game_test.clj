@@ -18,12 +18,14 @@
         game-id (get-in dummy-game [:_id])
         [response status] (service/get-json (str "/game/" game-id))]
     (testing "public view"
-      (is (nil? (get-in response [:viewed-by])))
-      (is (nil? (get-in response [:battle :elements])))
-      (is (nil? (get-in response [:battle :stash])))
-      (is (nil? (get-in response [:starting-stash])))
+      (is (empty? (get-in response [:viewed-by])))
+      (is (empty? (get-in response [:battle :elements])))
+      (is (empty? (get-in response [:battle :stash :p1])))
+      (is (empty? (get-in response [:battle :stash :p2])))
+      (is (empty? (get-in response [:starting-stash])))
       (is (= status 200)))
     (testing "donbonifacio's view"
-      (let [[response status] (service/get-json (str "/game/" game-id "?token=" token-donbonifacio))]
+      (let [url (str "/game/" game-id "?token=" token-donbonifacio)
+            [response status] (service/get-json url)]
         (is (= "donbonifacio" (response :viewed-by)))
         (is (= status 200))))))

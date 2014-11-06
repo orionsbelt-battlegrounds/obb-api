@@ -4,14 +4,14 @@
             [obb-api.interceptors.auth-interceptor :as auth-interceptor]
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
-            [obb-rules.game :as game]))
+            [obb-rules.game :as game]
+            [obb-rules.privatize :as privatize]))
 
 (defn- prepare-game-deploy
   "Prepares a game in deploy state for JSON"
   [request game]
   (-> game
-      (update-in [:battle] dissoc :elements)
-      (update-in [:battle] dissoc :stash)
+      (assoc :battle (privatize/game (game :battle)))
       (dissoc :starting-stash)))
 
 (defn- prepare-game-ongoing
