@@ -9,31 +9,39 @@
 
 (defn- prepare-game-deploy
   "Prepares a game in deploy state for JSON"
-  [request game]
+  [request game viewer]
   (-> game
-      (assoc :battle (privatize/game (game :battle)))
+      (assoc :battle (privatize/game (game :battle) viewer))
       (dissoc :starting-stash)))
 
 (defn- prepare-game-ongoing
   "Prepares an ongoging game for JSON"
-  [request game]
+  [request game viewer]
   game)
 
 (defn- prepare-game
   "Prepares the game for JSON"
-  [request game]
+  [request game viewer]
   (if (= "deploy" )
-    (prepare-game-deploy request game)
-    (prepare-game-ongoing request game)))
+    (prepare-game-deploy request game viewer)
+    (prepare-game-ongoing request game viewer)))
+
+(defn match-viewer
+  "Checks if the given username is playing the game"
+  [game username]
+  (cond
+    (= username (get-in game [:p1 :name])) :p1
+    (= username (get-in game [:p2 :name])) :p2))
 
 (defn handler
   "Shows a game's info"
   [request]
   (let [battle-id (get-in request [:path-params :id])
         game (battle-gateway/load-battle battle-id)
-        username (auth-interceptor/username request)]
+        username (auth-interceptor/username request)
+        viewer (match-viewer game username)]
     (if game
-      (-> (prepare-game request game)
+      (-> (prepare-game request game viewer)
           (assoc :viewed-by username)
           (response/json-ok))
       (response/json-not-found))))

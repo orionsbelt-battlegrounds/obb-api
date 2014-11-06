@@ -27,5 +27,7 @@
     (testing "donbonifacio's view"
       (let [url (str "/game/" game-id "?token=" token-donbonifacio)
             [response status] (service/get-json url)]
+        (is (empty? (get-in response [:battle :stash :p2])))
+        (is (not (empty? (get-in response [:battle :stash :p1]))))
         (is (= "donbonifacio" (response :viewed-by)))
         (is (= status 200))))))
