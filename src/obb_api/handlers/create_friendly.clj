@@ -38,13 +38,20 @@
                                              :battle battle})]
     (response/json-ok saved)))
 
+(defn- create-battle
+  "Creates a battle for a given request"
+  [request]
+  (if-let [stash (get-in request [:json-params :stash :challenger])]
+    (game/create stash)
+    (game/random)))
+
 (defn- create-game
   "Creates the game"
   [request]
   (let [p1 (challenger-name request)
         p2 (opponent-name request)
         [challenger opponent] (player-gateway/find-players [p1 p2])
-        battle (game/random)]
+        battle (create-battle request)]
     (if-let [error (validate request challenger opponent)]
       (response/json-error {:error error})
       (save-game challenger opponent battle))))
