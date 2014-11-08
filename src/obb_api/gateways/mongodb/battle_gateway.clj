@@ -35,3 +35,9 @@
   (when (ObjectId/isValid id)
     (-> (db)
         (mc/find-one-as-map collection-name {:_id (ObjectId. id)}))))
+
+(defn update-battle
+  "Updates a battle given a result"
+  [game]
+  (-> (db)
+      (mc/update-by-id collection-name (game :_id) game)))

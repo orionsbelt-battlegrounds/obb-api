@@ -11,3 +11,8 @@
   "Loads a persisted battle"
   [id]
   (mongodb/load-battle id))
+
+(defn update-battle
+  "Updates a battle given a result"
+  [game]
+  (mongodb/update-battle game))

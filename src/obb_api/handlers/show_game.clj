@@ -5,6 +5,7 @@
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-rules.game :as game]
+            [obb-rules.translator :as translator]
             [obb-rules.privatize :as privatize]))
 
 (defn- prepare-game-deploy
@@ -17,7 +18,7 @@
 (defn- prepare-game-ongoing
   "Prepares an ongoging game for JSON"
   [request game viewer]
-  game)
+  (assoc game :battle (translator/board viewer (game :battle))))
 
 (defn- prepare-game
   "Prepares the game for JSON"

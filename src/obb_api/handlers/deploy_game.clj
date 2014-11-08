@@ -6,6 +6,7 @@
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-rules.game :as game]
+            [obb-rules.simplifier :as simplify]
             [obb-rules.translator :as translator]
             [obb-rules.turn :as turn]))
 
@@ -45,6 +46,17 @@
     (response/json-error processed error-status)
     (response/json-error {:error error} error-status)))
 
+(defn- save
+  "Saves the game"
+  [game result]
+  (let [sresult (simplify/clean-result result)
+        action-results (get-in sresult [:board :action-results])
+        new-board (sresult :board)
+        new-game (assoc game :board (dissoc new-board :action-results))]
+    (battle-gateway/update-battle new-game)
+    (-> new-game
+        (assoc :success (sresult :success)))))
+
 (defn handler
   "Processes deploy actions"
   [request]
@@ -59,4 +71,4 @@
                                              :game game
                                              :processed processed})]
       (dump-error error error-status processed)
-      (response/json-ok processed))))
+      (response/json-ok (save game processed)))))
