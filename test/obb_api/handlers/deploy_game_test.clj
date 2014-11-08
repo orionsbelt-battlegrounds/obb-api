@@ -55,3 +55,23 @@
     (is (= true (response :success)))
     (is (= status 200))))
 
+(deftest deploy-success-2-actions-test
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 1 :kamikaze [8 8]]
+                        [:deploy 1 :kamikaze [7 7]]]}
+        [response status] (service/put-json "donbonifacio"
+                                            (str "/game/" (game :_id)  "/deploy")
+                                            data)]
+    (is (= true (response :success)))
+    (is (= status 200))))
+
+(deftest deploy-success-p2-test
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 2 :kamikaze [8 8]]]}
+        [response status] (service/put-json "Pyro"
+                                            (str "/game/" (game :_id)  "/deploy")
+                                            data)]
+    (println response)
+    (is (= true (response :success)))
+    (is (= status 200))))
+

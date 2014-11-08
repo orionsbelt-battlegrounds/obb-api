@@ -6,6 +6,7 @@
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-rules.game :as game]
+            [obb-rules.translator :as translator]
             [obb-rules.turn :as turn]))
 
 (defn- valid-player?
@@ -33,8 +34,9 @@
   (when game
     (let [actions (get-in request [:json-params :actions])
           player-code (show-game/match-viewer game username)
+          translated-actions (translator/actions player-code actions)
           battle (game :battle)]
-      (apply turn/process battle player-code actions))))
+      (apply turn/process battle player-code translated-actions))))
 
 (defn- dump-error
   "Outputs proper error"
