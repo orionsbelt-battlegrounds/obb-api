@@ -2,10 +2,11 @@
   "Processes deploys on battles"
   (:require [obb-api.response :as response]
             [obb-api.interceptors.auth-interceptor :as auth-interceptor]
+            [obb-api.handlers.show-game :as show-game]
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-rules.game :as game]
-            [obb-rules.privatize :as privatize]))
+            [obb-rules.turn :as turn]))
 
 (defn- valid-player?
   "Checks if a given player belongs to this battle"
@@ -23,7 +24,24 @@
     (nil? (args :game)) ["InvalidGame" 404]
     (not (valid-player? args)) ["InvalidPlayer" 401]
     (nil? (get-in args [:data])) ["EmptyJSON" 412]
-    (nil? (get-in args [:data :actions])) ["NoActions" 412]))
+    (nil? (get-in args [:data :actions])) ["NoActions" 412]
+    (= false ((args :processed) :success)) ["TurnFailed" 422]))
+
+(defn- process-actions
+  "Applies the actions to the battle"
+  [request game username]
+  (when game
+    (let [actions (get-in request [:json-params :actions])
+          player-code (show-game/match-viewer game username)
+          battle (game :battle)]
+      (apply turn/process battle player-code actions))))
+
+(defn- dump-error
+  "Outputs proper error"
+  [error error-status processed]
+  (if (= 422 error-status)
+    (response/json-error processed error-status)
+    (response/json-error {:error error} error-status)))
 
 (defn handler
   "Processes deploy actions"
@@ -31,10 +49,12 @@
   (let [data (request :json-params)
         battle-id (get-in request [:path-params :id])
         game (battle-gateway/load-battle battle-id)
-        username (auth-interceptor/username request)]
+        username (auth-interceptor/username request)
+        processed (process-actions request game username)]
     (if-let [[error error-status] (validate {:request request
                                              :data data
                                              :username username
-                                             :game game})]
-      (response/json-error {:error error} error-status)
-      (response/json-ok {}))))
+                                             :game game
+                                             :processed processed})]
+      (dump-error error error-status processed)
+      (response/json-ok processed))))

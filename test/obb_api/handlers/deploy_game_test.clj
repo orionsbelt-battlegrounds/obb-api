@@ -11,14 +11,13 @@
   []
   (create-friendly-test/create-dummy-game "donbonifacio"
                                           "Pyro"
-                                          (stash/create :kamikaze 1)))
+                                          (stash/create :kamikaze 2)))
 
 (deftest error-if-no-actions-test
   (let [[game _] (create-game)
-        data {}
         [response status] (service/put-json "donbonifacio"
                                             (str "/game/" (game :_id)  "/deploy")
-                                            data)]
+                                            nil)]
     (is (= "EmptyJSON" (response :error)))
     (is (= status 412))))
 
@@ -37,4 +36,22 @@
                                             data)]
     (is (= "InvalidPlayer" (response :error)))
     (is (= status 401))))
+
+(deftest deploy-invalid-action-test
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 2 :kamikaze [4 4]]]}
+        [response status] (service/put-json "donbonifacio"
+                                            (str "/game/" (game :_id)  "/deploy")
+                                            data)]
+    (is (= false (response :success)))
+    (is (= status 422))))
+
+(deftest deploy-success-test
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 2 :kamikaze [8 8]]]}
+        [response status] (service/put-json "donbonifacio"
+                                            (str "/game/" (game :_id)  "/deploy")
+                                            data)]
+    (is (= true (response :success)))
+    (is (= status 200))))
 

@@ -21,7 +21,7 @@
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
      ["/game/:id/deploy" {:put deploy-game/handler}
-      ^:interceptors [auth-interceptor/enforce]]
+      ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
      ["/game/:id" {:get show-game/handler}
       ^:interceptors [auth-interceptor/parse]]
