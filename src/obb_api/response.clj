@@ -18,10 +18,12 @@
 
 (defn json-error
   "Returns a json response error given the clojure object"
-  [obj]
-  (-> (http/json-response obj)
-      (set-headers)
-      (assoc :status 412)))
+  ([obj]
+   (json-error obj 412))
+  ([obj status]
+   (-> (http/json-response obj)
+       (set-headers)
+       (assoc :status status))))
 
 (defn json-not-found
   "Returns a not tound error"

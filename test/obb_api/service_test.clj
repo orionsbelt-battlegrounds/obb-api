@@ -48,3 +48,14 @@
                                        :headers {"Content-Type" "application/json"})]
     [(-> response :body parse-json) (response :status)]))
 
+
+(defn put-json
+  "PUTs a json request"
+  [username url obj]
+  (let [authed-url (add-token username url)
+        data (json/generate-string obj)
+        response (response-for service :put authed-url
+                                       :body data
+                                       :headers {"Content-Type" "application/json"})]
+    [(-> response :body parse-json) (response :status)]))
+
