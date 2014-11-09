@@ -19,6 +19,12 @@
       (= username (get-in battle [:p1 :name]))
       (= username (get-in battle [:p2 :name])))))
 
+(defn- stash-still-has-units?
+  "Checks if the player's stash still has units"
+  [args]
+  (let [player-code (show-game/match-viewer (args :game) (args :username))]
+    (not (empty? (get-in args [:processed :board :stash player-code])))))
+
 (defn- validate
   "Validates data for deploying"
   [args]
@@ -27,7 +33,8 @@
     (not (valid-player? args)) ["InvalidPlayer" 401]
     (nil? (get-in args [:data])) ["EmptyJSON" 412]
     (nil? (get-in args [:data :actions])) ["NoActions" 412]
-    (= false ((args :processed) :success)) ["TurnFailed" 422]))
+    (= false ((args :processed) :success)) ["TurnFailed" 422]
+    (stash-still-has-units? args) ["StashNotCleared" 412]))
 
 (defn- process-actions
   "Applies the actions to the battle"
