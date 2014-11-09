@@ -20,8 +20,8 @@
   [args]
   {:p1 (args :p1)
    :p2 (args :p2)
-   :battle (args :battle)
-   :starting-stash (get-in args [:battle :stash])})
+   :board (args :board)
+   :starting-stash (get-in args [:board :stash])})
 
 (defn create-battle
   "Creates a battle"

@@ -36,7 +36,7 @@
     (let [actions (get-in request [:json-params :actions])
           player-code (show-game/match-viewer game username)
           translated-actions (translator/actions player-code actions)
-          battle (game :battle)]
+          battle (game :board)]
       (apply turn/process battle player-code translated-actions))))
 
 (defn- dump-error

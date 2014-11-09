@@ -35,7 +35,7 @@
   [challenger opponent battle]
   (let [saved (battle-gateway/create-battle {:p1 challenger
                                              :p2 opponent
-                                             :battle battle})]
+                                             :board battle})]
     (response/json-ok saved)))
 
 (defn- create-battle

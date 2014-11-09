@@ -12,7 +12,7 @@
   "Prepares a game in deploy state for JSON"
   [request game viewer]
   (-> game
-      (assoc :battle (privatize/game (game :battle) viewer))
+      (assoc :battle (privatize/game (game :board) viewer))
       (dissoc :starting-stash)))
 
 (defn- prepare-game-ongoing
