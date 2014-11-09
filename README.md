@@ -96,6 +96,51 @@ curl -XPOST http://api.orionsbelt.eu/game/create/friendly?token=eyJhbGciOiJIUzI1
 }
 ```
 
+### `PUT /game/:id/deploy` performs deploy actions
+
+Performs the deploy actions for the game with the given `:id`. It's mandatory that the auth token be given and that belongs to one of the players. When both players have both deployed, the game will auto start and the first one will
+be randomly selected.
+
+```
+curl -XPUT http://api.orionsbelt.eu/game/some_id/deploy?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkb25ib25pZmFjaW8iLCJleHAiOjE0MTQ2MTYxMTIsImlhdCI6MTQxNDcwMjUxMn0.lisfjmr4ShsYJt2FX8FfJrQ828HVbPGFKF5BL9GMEbw \
+     -H "Content-Type: application/json" \
+     -d '{ actions : [ ["deploy", 10, "rain", [8, 8]] ]}'
+```
+```javascript
+{  
+   "battle":{  
+      "state":"deploy",
+      "stash":{  
+         "p2":{  
+            "anubis":100,
+            "heavy-seeker":25,
+            "nova":25,
+            "kamikaze":50,
+            "rain":100,
+            "scarab":50,
+            "worm":50,
+            "crusader":25
+         },
+         "p1":{}
+      },
+      "width":8,
+      "height":8,
+      "terrain":"terrest",
+      "elements":{
+         "[8 8" : {
+            "unit" : "rain",
+            "coordinate" : [8, 8],
+            "player" : "p1",
+            "quantity" : 10
+         }
+      }
+   },
+   "p2":{ "name":"Pyro" },
+   "p1":{ "name":"donbonifacio" },
+   "_id":"54565621300418dc8ed15cf1"
+}
+```
+
 ### `GET /auth/verify` verifies the OBB token
 
 Given a token, will analyse it and output information about it, for example if it's considered valid.
