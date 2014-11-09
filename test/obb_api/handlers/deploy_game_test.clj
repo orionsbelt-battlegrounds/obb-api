@@ -74,7 +74,7 @@
     (is (= true (response :success)))
     (is (= status 200))))
 
-#_(deftest deploy-complete-success-test
+(deftest deploy-complete-success-test
   (let [[game _] (create-game)
         data {:actions [[:deploy 2 :kamikaze [8 8]]]}
         [response status] (service/put-json "Pyro"
@@ -84,8 +84,8 @@
         [response status] (service/put-json "donbonifacio"
                                             (str "/game/" (game :_id)  "/deploy")
                                             data)]
-    (println response)
-    (is (= "p1" (get-in response [:oard :state])))
+    (let [state (get-in response [:board :state])]
+      (is (or (= "p1" state) (= "p2" state))))
     (is (empty? (get-in response [:board :stash :p1])))
     (is (empty? (get-in response [:board :stash :p2])))
     (is (= true (response :success)))
