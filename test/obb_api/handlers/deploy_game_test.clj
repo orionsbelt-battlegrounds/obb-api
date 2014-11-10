@@ -12,6 +12,19 @@
   (create-friendly-test/create-dummy-game "donbonifacio"
                                           "Pyro"
                                           (stash/create :kamikaze 2)))
+(defn create-deployed-game
+  "Creates a dummy deployed game"
+  []
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 2 :kamikaze [7 7]]]}
+        [response status] (service/put-json "Pyro"
+                                            (str "/game/" (game :_id)  "/deploy")
+                                            data)
+        data {:actions [[:deploy 2 :kamikaze [2 2]]]}
+        [response status] (service/put-json "donbonifacio"
+                                            (str "/game/" (game :_id)  "/deploy")
+                                            data)]
+    [response status]))
 
 (deftest error-if-no-actions-test
   (let [[game _] (create-game)
@@ -84,15 +97,7 @@
     (is (= status 200))))
 
 (deftest deploy-complete-success-test
-  (let [[game _] (create-game)
-        data {:actions [[:deploy 2 :kamikaze [8 8]]]}
-        [response status] (service/put-json "Pyro"
-                                            (str "/game/" (game :_id)  "/deploy")
-                                            data)
-        data {:actions [[:deploy 2 :kamikaze [1 8]]]}
-        [response status] (service/put-json "donbonifacio"
-                                            (str "/game/" (game :_id)  "/deploy")
-                                            data)]
+  (let [[response status] (create-deployed-game)]
     (let [state (get-in response [:board :state])]
       (is (or (= "p1" state) (= "p2" state))))
     (is (empty? (get-in response [:board :stash :p1])))
