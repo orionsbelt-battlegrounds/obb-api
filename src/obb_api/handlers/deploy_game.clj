@@ -5,6 +5,7 @@
             [obb-api.handlers.show-game :as show-game]
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
+            [obb-api.core.turn-processor :as turn-processor]
             [obb-rules.game :as game]
             [obb-rules.simplifier :as simplify]
             [obb-rules.translator :as translator]
@@ -36,34 +37,6 @@
     (= false ((args :processed) :success)) ["TurnFailed" 422]
     (stash-still-has-units? args) ["StashNotCleared" 412]))
 
-(defn- process-actions
-  "Applies the actions to the battle"
-  [request game username]
-  (when game
-    (let [actions (get-in request [:json-params :actions])
-          player-code (show-game/match-viewer game username)
-          translated-actions (translator/actions player-code actions)
-          battle (game :board)]
-      (apply turn/process battle player-code translated-actions))))
-
-(defn- dump-error
-  "Outputs proper error"
-  [error error-status processed]
-  (if (= 422 error-status)
-    (response/json-error processed error-status)
-    (response/json-error {:error error} error-status)))
-
-(defn- save
-  "Saves the game"
-  [game result]
-  (let [sresult (simplify/clean-result result)
-        action-results (get-in sresult [:board :action-results])
-        new-board (sresult :board)
-        new-game (assoc game :board (dissoc new-board :action-results))]
-    (battle-gateway/update-battle new-game)
-    (-> new-game
-        (assoc :success (sresult :success)))))
-
 (defn handler
   "Processes deploy actions"
   [request]
@@ -71,11 +44,11 @@
         battle-id (get-in request [:path-params :id])
         game (battle-gateway/load-battle battle-id)
         username (auth-interceptor/username request)
-        processed (process-actions request game username)]
+        processed (turn-processor/process-actions request game username)]
     (if-let [[error error-status] (validate {:request request
                                              :data data
                                              :username username
                                              :game game
                                              :processed processed})]
-      (dump-error error error-status processed)
-      (response/json-ok (save game processed)))))
+      (turn-processor/turn-error-response error error-status processed)
+      (response/json-ok (turn-processor/save-game game processed)))))
