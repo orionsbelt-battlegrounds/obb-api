@@ -6,11 +6,15 @@
             [io.pedestal.test :refer :all]
             [io.pedestal.http :as bootstrap]))
 
+(defn- create-game
+  "Creates a game where p1 is the first to play"
+  []
+  (-> (deploy-game-test/create-deployed-game)))
+
 (deftest play-game-smoke
-  (let [[game _] (deploy-game-test/create-deployed-game)
+  (let [[game _] (create-game)
         data {}
         [response status] (service/put-json "donbonifacio"
                                             (str "/game/" (game :_id) "/turn")
                                             data)]
-    (is (not= 404 status))
-    (is (#{"p1" "p2"} (get-in game [:board :state])))))
+    (is (not= 404 status))))
