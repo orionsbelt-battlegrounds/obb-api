@@ -3,13 +3,18 @@
             [obb-api.service-test :as service]
             [obb-rules.stash :as stash]
             [obb-api.handlers.deploy-game-test :as deploy-game-test]
+            [obb-api.gateways.battle-gateway :as battle-gateway]
             [io.pedestal.test :refer :all]
             [io.pedestal.http :as bootstrap]))
 
 (defn- create-game
   "Creates a game where p1 is the first to play"
   []
-  (-> (deploy-game-test/create-deployed-game)))
+  (let [[game status] (deploy-game-test/create-deployed-game)]
+    (-> game
+        (assoc-in [:board :state] "p1")
+        (battle-gateway/update-battle))
+    game))
 
 (defn- make-move
   "Makes a move on a game"
@@ -21,12 +26,12 @@
                      data)))
 
 (deftest play-game-smoke
-  (let [[game _] (create-game)
+  (let [game (create-game)
         [response status] (make-move game nil)]
     (is (not= 404 status))))
 
 (deftest error-if-no-actions-test
-  (let [[game _] (create-game)
+  (let [game (create-game)
         [response status] (make-move game nil)]
     (is (= "EmptyJSON" (response :error)))
     (is (= 412 status))))
@@ -38,7 +43,7 @@
     (is (= 404 status))))
 
 (deftest error-if-invalid-player-test
-  (let [[game _] (create-game)
+  (let [game (create-game)
         [response status] (make-move game {} "ShadowKnight")]
     (is (= "InvalidPlayer" (response :error)))
     (is (= 401 status))))
@@ -51,7 +56,7 @@
     (get-in game [(keyword other-code) :name])))
 
 (deftest error-if-not-player-turn-test
-  (let [[game _] (create-game)
+  (let [game (create-game)
         other-player (get-waiting-player game)
         [response status] (make-move game {} other-player)]
     (is (= "InvalidPlayer" (response :error)))
