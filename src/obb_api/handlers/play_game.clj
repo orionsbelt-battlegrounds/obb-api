@@ -24,8 +24,8 @@
   [args]
   (cond
     (nil? (args :game)) ["InvalidGame" 404]
-    (not (valid-player? args)) ["InvalidPlayer" 401]
     (nil? (get-in args [:data])) ["EmptyJSON" 412]
+    (not (valid-player? args)) ["InvalidPlayer" 401]
     (nil? (get-in args [:data :actions])) ["NoActions" 412]
     (= false ((args :processed) :success)) ["TurnFailed" 422]))
 
