@@ -10,11 +10,14 @@
 (defn- create-game
   "Creates a game where p1 is the first to play"
   []
-  (let [[game status] (deploy-game-test/create-deployed-game)]
-    (-> game
-        (assoc-in [:board :state] "p1")
-        (battle-gateway/update-battle))
-    game))
+  (let [[game status] (deploy-game-test/create-deployed-game)
+        p1-game (assoc-in game [:board :state] "p1")]
+    (let [updated (battle-gateway/update-battle p1-game)
+          updated-state (get-in updated [:board :state])
+          loaded (battle-gateway/load-battle (game :_id))
+          loaded-state (get-in loaded [:board :state])]
+      (assert (= updated-state loaded-state "p1"))
+      updated)))
 
 (defn- make-move
   "Makes a move on a game"
@@ -58,6 +61,14 @@
 (deftest error-if-not-player-turn-test
   (let [game (create-game)
         other-player (get-waiting-player game)
-        [response status] (make-move game {} other-player)]
+        [response status] (make-move game {:actions []} other-player)]
     (is (= "InvalidPlayer" (response :error)))
     (is (= 401 status))))
+
+(deftest allow-zero-actions-test
+  (let [game (create-game)
+        [response status] (make-move game {:actions []} "donbonifacio")]
+    (is (= true (response :success)))
+    #_(is (= "p2" (get-in response [:board :state])))
+    (println response)
+    (is (= 200 status))))

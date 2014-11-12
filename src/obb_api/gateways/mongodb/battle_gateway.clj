@@ -2,6 +2,7 @@
   "Persists battles on mongodb"
   (:require [monger.core :as mg]
             [environ.core :refer [env]]
+            [monger.result :refer [ok? has-error?]]
             [monger.collection :as mc])
   (:import [org.bson.types ObjectId]
            [com.mongodb DB WriteConcern]))
@@ -36,8 +37,16 @@
     (-> (db)
         (mc/find-one-as-map collection-name {:_id (ObjectId. id)}))))
 
+(defn- resolve-id
+  "Verifies the id of the game"
+  [game]
+  (if (string? (game :_id))
+    (assoc game :_id (ObjectId. (game :_id)))
+    game))
+
 (defn update-battle
   "Updates a battle given a result"
   [game]
-  (-> (db)
-      (mc/update-by-id collection-name (game :_id) game)))
+  (let [result (-> (db)
+                   (mc/save-and-return collection-name (resolve-id game)))]
+    result))
