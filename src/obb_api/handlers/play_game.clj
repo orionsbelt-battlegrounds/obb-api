@@ -11,9 +11,30 @@
             [obb-rules.translator :as translator]
             [obb-rules.turn :as turn]))
 
+(defn- validate
+  "Validates data for playing the turn"
+  [args]
+  (cond
+    (nil? (args :game)) ["InvalidGame" 404]
+    ;(not (valid-player? args)) ["InvalidPlayer" 401]
+    (nil? (get-in args [:data])) ["EmptyJSON" 412]
+    (nil? (get-in args [:data :actions])) ["NoActions" 412]
+    (= false ((args :processed) :success)) ["TurnFailed" 422]))
+
 (defn handler
   "Processes turn actions"
   [request]
-  (response/json-ok {}))
+  (let [data (request :json-params)
+        battle-id (get-in request [:path-params :id])
+        game (battle-gateway/load-battle battle-id)
+        username (auth-interceptor/username request)
+        processed (turn-processor/process-actions request game username)]
+    (if-let [[error error-status] (validate {:request request
+                                             :data data
+                                             :username username
+                                             :game game
+                                             :processed processed})]
+      (turn-processor/turn-error-response error error-status processed)
+      (response/json-ok (turn-processor/save-game game processed)))))
 
 
