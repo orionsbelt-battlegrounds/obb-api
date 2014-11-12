@@ -13,10 +13,12 @@
 
 (defn- make-move
   "Makes a move on a game"
-  [game data]
-  (service/put-json "donbonifacio"
-                    (str "/game/" (game :_id) "/turn")
-                    data))
+  ([game data]
+   (make-move game data "donbonifacio"))
+  ([game data username]
+   (service/put-json username
+                     (str "/game/" (game :_id) "/turn")
+                     data)))
 
 (deftest play-game-smoke
   (let [[game _] (create-game)
@@ -34,3 +36,23 @@
         [response status] (make-move game {})]
     (is (= "InvalidGame" (response :error)))
     (is (= 404 status))))
+
+(deftest error-if-invalid-player-test
+  (let [[game _] (create-game)
+        [response status] (make-move game {} "ShadowKnight")]
+    (is (= "InvalidPlayer" (response :error)))
+    (is (= 401 status))))
+
+(defn- get-waiting-player
+  "Gets the player of the game that's waiting to play"
+  [game]
+  (let [current (get-in game [:board :state])
+        other-code (first (disj #{"p1" "p2"} current))]
+    (get-in game [(keyword other-code) :name])))
+
+(deftest error-if-not-player-turn-test
+  (let [[game _] (create-game)
+        other-player (get-waiting-player game)
+        [response status] (make-move game {} other-player)]
+    (is (= "InvalidPlayer" (response :error)))
+    (is (= 401 status))))

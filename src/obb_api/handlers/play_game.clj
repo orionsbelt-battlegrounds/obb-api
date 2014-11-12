@@ -11,12 +11,20 @@
             [obb-rules.translator :as translator]
             [obb-rules.turn :as turn]))
 
+(defn- valid-player?
+  "Checks if a given player belongs to this battle"
+  [args]
+  (let [current (get-in args [:game :board :state])
+        current-username (get-in args [:game (keyword current) :name])
+        auth-username (args :username)]
+    (= auth-username current-username)))
+
 (defn- validate
   "Validates data for playing the turn"
   [args]
   (cond
     (nil? (args :game)) ["InvalidGame" 404]
-    ;(not (valid-player? args)) ["InvalidPlayer" 401]
+    (not (valid-player? args)) ["InvalidPlayer" 401]
     (nil? (get-in args [:data])) ["EmptyJSON" 412]
     (nil? (get-in args [:data :actions])) ["NoActions" 412]
     (= false ((args :processed) :success)) ["TurnFailed" 422]))
