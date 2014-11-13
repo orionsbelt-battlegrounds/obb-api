@@ -80,11 +80,10 @@
     (is (= false (response :success)))
     (is (= 422 status))))
 
-#_(deftest make-single-action-success
+(deftest make-single-action-success
   (let [game (create-game)
         [response status] (make-move game
                                      {:actions [[:move [2 7] [1 7] 1]]}
                                      "donbonifacio")]
-    (println response)
     (is (= true (response :success)))
     (is (= 200 status))))

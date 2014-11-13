@@ -14,7 +14,8 @@
     (let [actions (get-in request [:json-params :actions])
           player-code (show-game/match-viewer game username)
           translated-actions (translator/actions player-code actions)
-          battle (game :board)]
+          built-game (simplify/build-result game)
+          battle (built-game :board)]
       (apply turn/process battle player-code translated-actions))))
 
 (defn save-game
@@ -26,6 +27,7 @@
         new-game (assoc game :board (dissoc new-board :action-results))]
     (battle-gateway/update-battle new-game)
     (-> new-game
+        (simplify/clean-result)
         (assoc :success (sresult :success)))))
 
 (defn turn-error-response
