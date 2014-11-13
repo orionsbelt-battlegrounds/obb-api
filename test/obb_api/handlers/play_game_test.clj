@@ -11,13 +11,9 @@
   "Creates a game where p1 is the first to play"
   []
   (let [[game status] (deploy-game-test/create-deployed-game)
-        p1-game (assoc-in game [:board :state] "p1")]
-    (let [updated (battle-gateway/update-battle p1-game)
-          updated-state (get-in updated [:board :state])
-          loaded (battle-gateway/load-battle (game :_id))
-          loaded-state (get-in loaded [:board :state])]
-      (assert (= updated-state loaded-state "p1"))
-      updated)))
+        p1-game (assoc-in game [:board :state] "p1")
+        updated (battle-gateway/update-battle p1-game)]
+    updated))
 
 (defn- make-move
   "Makes a move on a game"
@@ -69,6 +65,9 @@
   (let [game (create-game)
         [response status] (make-move game {:actions []} "donbonifacio")]
     (is (= true (response :success)))
-    #_(is (= "p2" (get-in response [:board :state])))
-    (println response)
     (is (= 200 status))))
+
+(deftest make-move-toggles-player
+  (let [game (create-game)
+        [response status] (make-move game {:actions []} "donbonifacio")]
+    (is (= "p2" (get-in response [:board :state])))))
