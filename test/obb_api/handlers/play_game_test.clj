@@ -71,3 +71,20 @@
   (let [game (create-game)
         [response status] (make-move game {:actions []} "donbonifacio")]
     (is (= "p2" (get-in response [:board :state])))))
+
+(deftest make-single-action-invalid
+  (let [game (create-game)
+        [response status] (make-move game
+                                     {:actions [[:move [4 4] [4 5] 1]]}
+                                     "donbonifacio")]
+    (is (= false (response :success)))
+    (is (= 422 status))))
+
+#_(deftest make-single-action-success
+  (let [game (create-game)
+        [response status] (make-move game
+                                     {:actions [[:move [2 7] [1 7] 1]]}
+                                     "donbonifacio")]
+    (println response)
+    (is (= true (response :success)))
+    (is (= 200 status))))
