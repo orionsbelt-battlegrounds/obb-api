@@ -27,7 +27,6 @@
         new-game (assoc game :board (dissoc new-board :action-results))]
     (battle-gateway/update-battle new-game)
     (-> new-game
-        (simplify/clean-result)
         (assoc :success (sresult :success)))))
 
 (defn turn-error-response
