@@ -7,13 +7,14 @@
   (:import [org.bson.types ObjectId]
            [com.mongodb DB WriteConcern]))
 
-(def mongodb-uri (or (env :mongosoup-url) "mongodb://127.0.0.1/obb"))
+(def mongodb-uri (or (env :mongosoup-url) "mongodb://127.0.0.1/obb?maxPoolSize=128&waitQueueMultiple=5;waitQueueTimeoutMS=150;socketTimeoutMS=5500&autoConnectRetry=true;safe=false&w=1;wtimeout=2500;fsync=true"))
 (def collection-name "battles")
+(def master-conn (mg/connect-via-uri mongodb-uri))
 
 (defn- db
   "Gets the current DB to handle"
   []
-  (let [{:keys [conn db]} (mg/connect-via-uri mongodb-uri)]
+  (let [{:keys [conn db]} master-conn]
     db))
 
 (defn- build
