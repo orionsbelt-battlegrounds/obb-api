@@ -87,3 +87,44 @@
                                      "donbonifacio")]
     (is (= true (response :success)))
     (is (= 200 status))))
+
+(deftest make-complete-actions-success
+  (let [game (create-game)
+        [response status] (make-move game
+                                     {:actions [[:move [2 7] [1 7] 2]
+                                                [:move [1 7] [2 7] 2]
+                                                [:move [2 7] [1 7] 2]
+                                                [:move [1 7] [2 7] 2]
+                                                [:move [2 7] [1 7] 2]
+                                                [:move [1 7] [2 7] 2]]}
+                                     "donbonifacio")]
+    (is (= "p2" (get-in response [:board :state])))
+    (is (= true (response :success)))
+    (is (= 200 status))))
+
+(deftest make-too-much-actions-error
+  (let [game (create-game)
+        [response status] (make-move game
+                                     {:actions [[:move [2 7] [1 7] 1]
+                                                [:move [1 7] [2 7] 1]
+                                                [:move [2 7] [1 7] 1]
+                                                [:move [1 7] [2 7] 1]
+                                                [:move [2 7] [1 7] 1]
+                                                [:move [1 7] [2 7] 1]]}
+                                     "donbonifacio")]
+    (is (= false (response :success)))
+    (is (= 422 status))))
+
+(deftest attack-and-end-game
+  (let [game (create-game)
+        [response status] (make-move game
+                                     {:actions [[:move [2 7] [2 6] 2]
+                                                [:move [2 6] [2 5] 2]
+                                                [:move [2 5] [2 4] 2]
+                                                [:move [2 4] [2 3] 2]
+                                                [:attack [2 3] [2 2]]]}
+                                     "donbonifacio")]
+    (is (= "final" (get-in response [:board :state])))
+    (is (= true (response :success)))
+    (is (= 200 status))))
+

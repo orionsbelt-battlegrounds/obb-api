@@ -34,6 +34,6 @@
   "Outputs proper error"
   [error error-status processed]
   (if (= 422 error-status)
-    (response/json-error processed error-status)
+    (response/json-error (simplify/clean-result processed) error-status)
     (response/json-error {:error error} error-status)))
 
