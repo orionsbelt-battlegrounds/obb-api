@@ -10,3 +10,4 @@ logs
 .lein-repl-history
 .lein-plugins/
 .lein-failures
+.nrepl-port
