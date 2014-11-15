@@ -3,6 +3,7 @@
   (:require [obb-api.response :as response]
             [obb-api.handlers.show-game :as show-game]
             [obb-api.gateways.battle-gateway :as battle-gateway]
+            [obb-api.core.turn-history :as history]
             [obb-rules.translator :as translator]
             [obb-rules.simplifier :as simplify]
             [obb-rules.turn :as turn]))
@@ -24,9 +25,11 @@
   (let [sresult (simplify/clean-result result)
         action-results (get-in sresult [:board :action-results])
         new-board (sresult :board)
-        new-game (assoc game :board (dissoc new-board :action-results))]
-    (battle-gateway/update-battle new-game)
-    (-> new-game
+        new-game (assoc game :board (dissoc new-board :action-results))
+        new-game-with-history (history/register new-game action-results)]
+    (battle-gateway/update-battle new-game-with-history)
+    (-> new-game-with-history
+        (assoc-in [:board :action-results] action-results)
         (assoc :success (sresult :success)))))
 
 (defn turn-error-response

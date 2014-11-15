@@ -3,6 +3,7 @@
   (:require [monger.core :as mg]
             [environ.core :refer [env]]
             [monger.result :refer [ok? has-error?]]
+            [monger.joda-time]
             [monger.collection :as mc])
   (:import [org.bson.types ObjectId]
            [com.mongodb DB WriteConcern]))
