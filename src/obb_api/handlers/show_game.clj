@@ -18,7 +18,7 @@
 (defn- prepare-game-ongoing
   "Prepares an ongoging game for JSON"
   [request game viewer]
-  (assoc game :battle (translator/board viewer (game :battle))))
+  (assoc game :board (translator/board viewer (game :board))))
 
 (defn- prepare-game
   "Prepares the game for JSON"

@@ -43,6 +43,9 @@
                                              :game game
                                              :processed processed})]
       (turn-processor/turn-error-response error error-status processed)
-      (response/json-ok (turn-processor/save-game game processed)))))
+      (response/json-ok (turn-processor/save-game request
+                                                  game
+                                                  processed
+                                                  username)))))
 
 
