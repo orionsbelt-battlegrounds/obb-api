@@ -17,14 +17,14 @@
   []
   (let [[game _] (create-game)
         data {:actions [[:deploy 2 :kamikaze [7 7]]]}
-        [response status] (service/put-json "Pyro"
-                                            (str "/game/" (game :_id)  "/deploy")
-                                            data)
-        data {:actions [[:deploy 2 :kamikaze [2 7]]]}
-        [response status] (service/put-json "donbonifacio"
-                                            (str "/game/" (game :_id)  "/deploy")
-                                            data)]
-    [response status]))
+        [response1 status1] (service/put-json "Pyro"
+                                              (str "/game/" (game :_id)  "/deploy")
+                                              data)
+        data {:actions [[:deploy 2 :kamikaze [7 7]]]}
+        [response2 status2] (service/put-json "donbonifacio"
+                                             (str "/game/" (game :_id)  "/deploy")
+                                             data)]
+    [response2 status2]))
 
 (deftest error-if-no-actions-test
   (let [[game _] (create-game)

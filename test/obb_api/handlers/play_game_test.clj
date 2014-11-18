@@ -83,7 +83,7 @@
 (deftest make-single-action-success
   (let [game (create-game)
         [response status] (make-move game
-                                     {:actions [[:move [2 7] [1 7] 1]]}
+                                     {:actions [[:move [7 7] [8 8] 1]]}
                                      "donbonifacio")]
     (is (= true (response :success)))
     (is (= 200 status))))
@@ -91,12 +91,12 @@
 (deftest make-complete-actions-success
   (let [game (create-game)
         [response status] (make-move game
-                                     {:actions [[:move [2 7] [1 7] 2]
-                                                [:move [1 7] [2 7] 2]
-                                                [:move [2 7] [1 7] 2]
-                                                [:move [1 7] [2 7] 2]
-                                                [:move [2 7] [1 7] 2]
-                                                [:move [1 7] [2 7] 2]]}
+                                     {:actions [[:move [7 7] [6 7] 2]
+                                                [:move [6 7] [7 7] 2]
+                                                [:move [7 7] [6 7] 2]
+                                                [:move [6 7] [7 7] 2]
+                                                [:move [7 7] [6 7] 2]
+                                                [:move [6 7] [7 7] 2]]}
                                      "donbonifacio")]
     (is (= "p2" (get-in response [:board :state])))
     (is (= true (response :success)))
@@ -118,10 +118,11 @@
 (deftest attack-and-end-game
   (let [game (create-game)
         [response status] (make-move game
-                                     {:actions [[:move [2 7] [2 6] 2]
-                                                [:move [2 6] [2 5] 2]
-                                                [:move [2 5] [2 4] 2]
-                                                [:move [2 4] [2 3] 2]
+                                     {:actions [[:move [7 7] [6 6] 2]
+                                                [:move [6 6] [5 5] 2]
+                                                [:move [5 5] [4 4] 2]
+                                                [:move [4 4] [3 3] 2]
+                                                [:move [3 3] [2 3] 2]
                                                 [:attack [2 3] [2 2]]]}
                                      "donbonifacio")]
     (is (= "final" (get-in response [:board :state])))

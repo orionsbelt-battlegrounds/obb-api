@@ -19,6 +19,15 @@
           battle (built-game :board)]
       (apply turn/process battle player-code translated-actions))))
 
+(defn- translate-board
+  "Translates the board to the given player focus"
+  [focus result]
+  (let [board (result :board)
+        translated (translator/board focus board)
+        translated-result (assoc result :board translated)
+        simplified (simplify/clean-result translated-result)]
+    (simplified :board)))
+
 (defn save-game
   "Saves a game after turn processing"
   [request game result username]
@@ -30,7 +39,7 @@
         new-game-with-history (history/register new-game action-results)]
     (battle-gateway/update-battle new-game-with-history)
     (-> new-game-with-history
-        #_(assoc :board (translator/board player-code (game :board)))
+        (assoc :board (translate-board player-code result))
         (assoc-in [:board :action-results] action-results)
         (assoc :success (sresult :success)))))
 
