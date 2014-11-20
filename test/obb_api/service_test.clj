@@ -9,6 +9,11 @@
 (def service
   (::bootstrap/service-fn (bootstrap/create-servlet service/service)))
 
+(defn add-token
+  "Adds a valid auth token to a given URL"
+  [username url]
+  (str url "?token=" (auth/token-for {:user username})))
+
 (defn get-raw
   "Gets a response"
   [url]
@@ -23,20 +28,17 @@
 
 (defn get-json
   "Gets a json response"
-  [url]
-  (let [response (get-raw url)]
-    [(-> response :body parse-json) (response :status)]))
+  ([url]
+   (let [response (get-raw url)]
+     [(-> response :body parse-json) (response :status)]))
+  ([username url]
+   (get-json (add-token username url))))
 
 (defn get-headers
   "Gets the response headers"
   [url]
   (-> (get-raw url)
       :headers))
-
-(defn add-token
-  "Adds a valid auth token to a given URL"
-  [username url]
-  (str url "?token=" (auth/token-for {:user username})))
 
 (defn post-json
   "Posts a json request"

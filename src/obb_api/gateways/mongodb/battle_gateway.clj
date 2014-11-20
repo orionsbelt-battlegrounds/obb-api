@@ -4,7 +4,8 @@
             [environ.core :refer [env]]
             [monger.result :refer [ok? has-error?]]
             [monger.joda-time]
-            [monger.collection :as mc])
+            [monger.collection :as mc]
+            [monger.query :as mq])
   (:import [org.bson.types ObjectId]
            [com.mongodb DB WriteConcern]))
 
@@ -31,6 +32,16 @@
   [args]
   (-> (db)
       (mc/insert-and-return collection-name (build args))))
+
+(defn load-latest-battles
+  "Loads the latest battles from the given username"
+  [username]
+  (-> (db)
+      (mq/with-collection collection-name
+          (mq/find {:$or [{:p1 {:name username}} {:p2 {:name username}}] })
+          (mq/sort (sorted-map :_id -1))
+          (mq/skip 00)
+          (mq/limit 50))))
 
 (defn load-battle
   "Loads a persisted battle"

@@ -7,6 +7,11 @@
   [args]
   (mongodb/create-battle args))
 
+(defn load-latest
+  "Loads the latest battles from the given username"
+  [username]
+  (mongodb/load-latest-battles username))
+
 (defn load-battle
   "Loads a persisted battle"
   [id]
