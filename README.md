@@ -50,6 +50,25 @@ the player's token, the information specific to the given player will be present
 }
 ```
 
+### `GET /player/latest-games` lists latest created games
+
+Returns the last games created for the player with the provided token.
+
+```
+curl -XGET http://api.orionsbelt.eu/player/latest-games?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkb25ib25pZmFjaW8iLCJleHAiOjE0MTQ2MTYxMTIsImlhdCI6MTQxNDcwMjUxMn0.lisfjmr4ShsYJt2FX8FfJrQ828HVbPGFKF5BL9GMEbw
+```
+```javascript
+[
+   {
+      "_id":"545790d6e4b0406f6fc19315",
+      "state":"deploy",
+      "p1":{"name":"donbonifacio"},
+      "p2":{"name":"Pyro"}
+   }
+   ...
+]
+```
+
 ### `POST /game/create/friendly` creates a friendly match
 
 Creates a match bettween two players. Returns the board ready to be deployed.
@@ -94,25 +113,6 @@ curl -XPOST http://api.orionsbelt.eu/game/create/friendly?token=eyJhbGciOiJIUzI1
    "p1":{ "name":"donbonifacio" },
    "_id":"54565621300418dc8ed15cf1"
 }
-```
-
-### `PUT /player/latest-games` lists latest created games
-
-Returns the last games created for the player with the provided token.
-
-```
-curl -XGET http://api.orionsbelt.eu/player/latest-games?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkb25ib25pZmFjaW8iLCJleHAiOjE0MTQ2MTYxMTIsImlhdCI6MTQxNDcwMjUxMn0.lisfjmr4ShsYJt2FX8FfJrQ828HVbPGFKF5BL9GMEbw
-```
-```javascript
-[
-   {
-      "_id":"545790d6e4b0406f6fc19315",
-      "state":"deploy",
-      "p1":{"name":"donbonifacio"},
-      "p2":{"name":"Pyro"}
-   }
-   ...
-]
 ```
 
 ### `PUT /game/:id/deploy` performs deploy actions
