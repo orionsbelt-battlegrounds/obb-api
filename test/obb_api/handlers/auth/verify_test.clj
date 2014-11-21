@@ -20,6 +20,10 @@
     (is (get-in response [:header :alg]))
     (is (get-in response [:claims :iss]))))
 
+(deftest verify-token-header-test
+  (let [response (service/get-json-header-token "donbonifacio" "/auth/enforce")]
+    (is (= 200 (get-in response [:status])))))
+
 (deftest verify-invalid-token-test
   (let [[response status] (service/get-json "/auth/verify?token=A")]
     (is (= status 200))

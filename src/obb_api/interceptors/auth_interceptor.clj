@@ -7,7 +7,9 @@
 (defn- get-raw-token
   "Gets a token from the request"
   [context]
-  (get-in context [:request :params :token]))
+  (or
+    (get-in context [:request :params :token])
+    (get-in context [:request :headers "x-obb-auth-token"])))
 
 (defn- parse-token
   "Parses a token from the context"

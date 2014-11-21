@@ -19,6 +19,11 @@
   [url]
   (response-for service :get url))
 
+(defn get-json-header-token
+  "Gets the url passing the token of the given user as a header"
+  [username url]
+  (response-for service :get url :headers {"x-obb-auth-token" (auth/token-for {:user username})}))
+
 (defn- parse-json
   "Parses the response json"
   [raw]
