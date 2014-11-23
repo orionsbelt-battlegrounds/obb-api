@@ -54,7 +54,7 @@
               ;; "http://localhost:8080"
               ;;
               ::bootstrap/allowed-origins ["http://orionsbelt.eu"
-                                           "http://orionsbelt-battlegrounds.github.io/"
+                                           "http://orionsbelt-battlegrounds.github.io"
                                            "http://localhost"]
 
               ;; Root for resource interceptor that is available by default.
