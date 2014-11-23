@@ -53,8 +53,8 @@
               ;;
               ;; "http://localhost:8080"
               ;;
-              ::bootstrap/allowed-origins ["*.orionsbelt.eu"
-                                           "localhost"]
+              ::bootstrap/allowed-origins ["http://orionsbelt.eu"
+                                           "http://localhost"]
 
               ;; Root for resource interceptor that is available by default.
               ::bootstrap/resource-path "/public"
