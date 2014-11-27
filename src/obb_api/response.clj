@@ -16,6 +16,13 @@
   (-> (http/json-response obj)
       (set-headers)))
 
+(defn json-created
+  "Returns a json object for a created model"
+  [obj]
+  (-> (http/json-response obj)
+      (assoc :status 201)
+      (set-headers)))
+
 (defn json-error
   "Returns a json response error given the clojure object"
   ([obj]

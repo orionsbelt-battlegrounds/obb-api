@@ -27,13 +27,13 @@
 
 (deftest create-friendly-test
   (let [[response status] (create-dummy-game "donbonifacio" "Pyro")]
-    (is (= status 200))
+    (is (= status 201))
     (is (response :starting-stash))))
 
 (deftest create-friendly-custom-stash-test
   (let [stash (stash/create :rain 1)
         [response status] (create-dummy-game "donbonifacio" "Pyro" stash)]
-    (is (= status 200))
+    (is (= status 201))
     (is (= 1 (get-in response [:starting-stash :p1 :rain])))
     (is (= 1 (get-in response [:starting-stash :p2 :rain])))
     (is (response :starting-stash))))
