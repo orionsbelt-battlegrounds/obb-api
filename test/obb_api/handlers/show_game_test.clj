@@ -29,5 +29,6 @@
             [response status] (service/get-json url)]
         (is (empty? (get-in response [:battle :stash :p2])))
         (is (not (empty? (get-in response [:battle :stash :p1]))))
-        (is (= "donbonifacio" (response :viewed-by)))
+        (is (= "donbonifacio" (get-in response [:viewed-by :username])))
+        (is (= "p1" (get-in response [:viewed-by :player-code])))
         (is (= status 200))))))

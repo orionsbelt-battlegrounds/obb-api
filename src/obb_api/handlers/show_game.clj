@@ -34,6 +34,14 @@
     (= username (get-in game [:p1 :name])) :p1
     (= username (get-in game [:p2 :name])) :p2))
 
+(defn- add-username-info
+  "Adds username info to the response, is available"
+  [game username viewer]
+  (if username
+    (assoc game :viewed-by {:username username
+                            :player-code viewer})
+    game))
+
 (defn handler
   "Shows a game's info"
   [request]
@@ -43,6 +51,6 @@
         viewer (match-viewer game username)]
     (if game
       (-> (prepare-game request game viewer)
-          (assoc :viewed-by username)
+          (add-username-info username viewer)
           (response/json-ok))
       (response/json-not-found))))
