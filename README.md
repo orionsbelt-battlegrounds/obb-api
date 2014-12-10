@@ -71,7 +71,15 @@ curl -XGET http://api.orionsbelt.eu/player/latest-games?token=eyJhbGciOiJIUzI1Ni
 
 ### `POST /game/create/friendly` creates a friendly match
 
-Creates a match bettween two players. Returns the board ready to be deployed.
+Creates a match bettween two players. Returns the board ready to be deployed. You can specify per player starting stash.
+
+```
+curl -XPOST http://api.orionsbelt.eu/game/create/friendly?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkb25ib25pZmFjaW8iLCJleHAiOjE0MTQ2MTYxMTIsImlhdCI6MTQxNDcwMjUxMn0.lisfjmr4ShsYJt2FX8FfJrQ828HVbPGFKF5BL9GMEbw \
+     -H "Content-Type: application/json" \
+     -d '{"challenger" : "donbonifacio", "opponent" : "Pyro", "stash" : {"challenger": {"rain":1}, "opponent": {"kamikaze":1}}}'
+```
+
+If you ommit the stash, a random stash with 8 units will be generated.
 
 ```
 curl -XPOST http://api.orionsbelt.eu/game/create/friendly?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkb25ib25pZmFjaW8iLCJleHAiOjE0MTQ2MTYxMTIsImlhdCI6MTQxNDcwMjUxMn0.lisfjmr4ShsYJt2FX8FfJrQ828HVbPGFKF5BL9GMEbw \
