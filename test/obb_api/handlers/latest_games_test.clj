@@ -9,5 +9,12 @@
 (deftest latest-games-smoke
   (let [[_ _] (create-friendly-test/create-dummy-game "donbonifacio" "Pyro")
         [response status] (service/get-json "donbonifacio" (str "/player/latest-games"))]
+    (is (not (empty? response)))
+    (is (= 200 status))))
+
+(deftest latest-games-smoke-p2
+  (let [[_ _] (create-friendly-test/create-dummy-game "donbonifacio" "Pyro")
+        [response status] (service/get-json "Pyro" (str "/player/latest-games"))]
+    (is (not (empty? response)))
     (is (= 200 status))))
 
