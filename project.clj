@@ -10,7 +10,7 @@
                  [clj-time "0.8.0"]
                  [clj-jwt "0.0.11"]
                  [environ "1.0.0"]
-                 [com.novemberain/monger "2.0.0"]
+                 [com.novemberain/monger "2.0.1"]
 
                  [obb-rules "1.3.3"]
 
