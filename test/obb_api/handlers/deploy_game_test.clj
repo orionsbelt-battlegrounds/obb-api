@@ -75,6 +75,9 @@
                                             (str "/game/" (game :_id)  "/deploy")
                                             data)]
     (is (= true (response :success)))
+    (is (response :viewed-by))
+    (is (= "donbonifacio" (get-in response [:viewed-by :username])))
+    (is (= "p1" (get-in response [:viewed-by :player-code])))
     (is (= status 200))))
 
 (deftest deploy-success-2-actions-test

@@ -44,6 +44,7 @@
         battle-id (get-in request [:path-params :id])
         game (battle-gateway/load-battle battle-id)
         username (auth-interceptor/username request)
+        viewer (show-game/match-viewer game username)
         processed (turn-processor/process-actions request game username)]
     (if-let [[error error-status] (validate {:request request
                                              :data data
@@ -51,7 +52,8 @@
                                              :game game
                                              :processed processed})]
       (turn-processor/turn-error-response error error-status processed)
-      (response/json-ok (turn-processor/save-game request
+      (response/json-ok (-> (turn-processor/save-game request
                                                   game
                                                   processed
-                                                  username)))))
+                                                  username)
+                            (show-game/add-username-info username viewer))))))

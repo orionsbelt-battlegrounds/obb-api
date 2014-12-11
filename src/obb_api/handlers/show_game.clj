@@ -34,7 +34,7 @@
     (= username (get-in game [:p1 :name])) :p1
     (= username (get-in game [:p2 :name])) :p2))
 
-(defn- add-username-info
+(defn add-username-info
   "Adds username info to the response, is available"
   [game username viewer]
   (if username
