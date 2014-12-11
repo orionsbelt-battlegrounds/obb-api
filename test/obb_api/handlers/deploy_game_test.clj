@@ -107,3 +107,15 @@
     (is (empty? (get-in response [:board :stash :p2])))
     (is (= true (response :success)))
     (is (= status 200))))
+
+(deftest deploy-success-p1-viewed-by-p2
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 2 :kamikaze [8 8]]]}
+        [response status] (service/put-json "donbonifacio"
+                                            (str "/game/" (game :_id)  "/deploy")
+                                            data)
+        [show show-status] (service/get-json "Pyro" (str "/game/" (game :_id)))]
+    (is (empty? (get-in show [:board :elements])))
+    (is (show :viewed-by))
+    (is (= show-status 200))))
+

@@ -5,6 +5,7 @@
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-rules.game :as game]
+            [obb-rules.simplifier :as simplify]
             [obb-rules.translator :as translator]
             [obb-rules.privatize :as privatize]))
 
@@ -13,6 +14,7 @@
   [request game viewer]
   (-> game
       (assoc :battle (privatize/game (game :board) viewer))
+      (dissoc :board)
       (dissoc :starting-stash)))
 
 (defn- prepare-game-ongoing
@@ -23,7 +25,7 @@
 (defn- prepare-game
   "Prepares the game for JSON"
   [request game viewer]
-  (if (= "deploy" )
+  (if (= "deploy" (get-in game [:board :state]))
     (prepare-game-deploy request game viewer)
     (prepare-game-ongoing request game viewer)))
 
@@ -47,10 +49,11 @@
   [request]
   (let [battle-id (get-in request [:path-params :id])
         game (battle-gateway/load-battle battle-id)
+        built-game (simplify/build-result game)
         username (auth-interceptor/username request)
         viewer (match-viewer game username)]
     (if game
-      (-> (prepare-game request game viewer)
+      (-> (prepare-game request built-game viewer)
           (add-username-info username viewer)
           (response/json-ok))
       (response/json-not-found))))

@@ -12,7 +12,7 @@
                  [environ "1.0.0"]
                  [com.novemberain/monger "2.0.1"]
 
-                 [obb-rules "1.3.3"]
+                 [obb-rules "1.3.4"]
 
                  [io.pedestal/pedestal.service "0.3.1"]
                  [io.pedestal/pedestal.jetty "0.3.1"]
