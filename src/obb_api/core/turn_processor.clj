@@ -39,6 +39,7 @@
         new-game-with-history (history/register new-game action-results)]
     (battle-gateway/update-battle new-game-with-history)
     (-> new-game-with-history
+        (dissoc :viewed-by)
         (assoc :board (translate-board player-code result))
         (assoc-in [:board :action-results] action-results)
         (assoc :success (sresult :success)))))

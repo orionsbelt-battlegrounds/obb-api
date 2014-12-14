@@ -85,6 +85,7 @@
         [response status] (make-move game
                                      {:actions [[:move [7 7] [8 8] 1]]}
                                      "donbonifacio")]
+    (is (response :viewed-by))
     (is (= true (response :success)))
     (is (= 200 status))))
 
