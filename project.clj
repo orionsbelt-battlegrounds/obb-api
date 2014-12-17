@@ -27,7 +27,8 @@
   :min-lein-version "2.0.0"
   :resource-paths ["config", "resources"]
   :profiles {:dev
-             {:plugins [[com.jakemccrary/lein-test-refresh "0.5.4"]]
+             {:plugins [[com.jakemccrary/lein-test-refresh "0.5.4"]
+                        [lein-cloverage "1.0.2"]]
               :aliases {"run-dev" ["trampoline" "run" "-m" "obb-api.server/run-dev"]}
                    :dependencies [[io.pedestal/pedestal.service-tools "0.3.1"]]}}
   :main ^{:skip-aot true} obb-api.server)
