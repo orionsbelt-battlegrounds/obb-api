@@ -7,3 +7,5 @@ jdk:
   - oraclejdk8
 services:
   - mongodb
+after_script:
+  - bash -ex script/coveralls.sh
