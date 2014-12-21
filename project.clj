@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  :java-agents [[com.newrelic.agent.java/newrelic-agent "3.12.0"]]
+  ;:java-agents [[com.newrelic.agent.java/newrelic-agent "3.12.0"]]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [clj-time "0.8.0"]
@@ -12,7 +12,7 @@
                  [environ "1.0.0"]
                  [com.novemberain/monger "2.0.1"]
 
-                 [obb-rules "1.3.6"]
+                 [obb-rules "1.4"]
 
                  [io.pedestal/pedestal.service "0.3.1"]
                  [io.pedestal/pedestal.jetty "0.3.1"]
