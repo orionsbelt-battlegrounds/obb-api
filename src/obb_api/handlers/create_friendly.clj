@@ -3,6 +3,7 @@
   (:require [obb-api.response :as response]
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
+            [obb-rules.stash :as stash]
             [obb-rules.game :as game]))
 
 (defn- challenger-name
@@ -38,11 +39,21 @@
                                              :board battle})]
     (response/json-created saved)))
 
+(defn- prepare-stash
+  "Prepares the stash for the engine, transforming keyword keys in strings"
+  [stash]
+  (->> stash
+       (map (fn [[k v]] [(name k) v]))
+       (into {})))
+
 (defn- create-battle
   "Creates a battle for a given request"
   [request]
   (if-let [stash (get-in request [:json-params :stash :challenger])]
-    (game/create stash)
+    (-> stash
+        (prepare-stash)
+        (stash/create-from-hash)
+        (game/create))
     (game/random)))
 
 (defn- create-game
@@ -52,6 +63,7 @@
         p2 (opponent-name request)
         [challenger opponent] (player-gateway/find-players [p1 p2])
         battle (create-battle request)]
+    (println "--" battle)
     (if-let [error (validate request challenger opponent)]
       (response/json-error {:error error})
       (save-game challenger opponent battle))))

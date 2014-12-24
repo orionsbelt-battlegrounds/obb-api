@@ -11,7 +11,7 @@
   []
   (create-friendly-test/create-dummy-game "donbonifacio"
                                           "Pyro"
-                                          (stash/create :kamikaze 2)))
+                                          (stash/create "kamikaze" 2)))
 (defn create-deployed-game
   "Creates a dummy deployed game"
   []
