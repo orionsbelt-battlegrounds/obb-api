@@ -63,7 +63,6 @@
         p2 (opponent-name request)
         [challenger opponent] (player-gateway/find-players [p1 p2])
         battle (create-battle request)]
-    (println "--" battle)
     (if-let [error (validate request challenger opponent)]
       (response/json-error {:error error})
       (save-game challenger opponent battle))))
