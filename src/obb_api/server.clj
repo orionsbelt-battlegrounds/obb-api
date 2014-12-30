@@ -1,5 +1,5 @@
 (ns obb-api.server
-  (:gen-class) ; for -main method in uberjar
+  (:gen-class)
   (:require [io.pedestal.http :as server]
             [obb-api.service :as service]))
 
@@ -29,6 +29,6 @@
 (defn -main
   "The entry-point for 'lein run'"
   [& args]
-  (println "\nCreating your server...")
+  (println "\nCreating your server..." )
   (server/start runnable-service))
 
