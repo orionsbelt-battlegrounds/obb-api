@@ -66,5 +66,7 @@
               ;; Either :jetty, :immutant or :tomcat (see comments in project.clj)
               ::bootstrap/type :jetty
               ;;::bootstrap/host "localhost"
-              ::bootstrap/port (Integer/parseInt (or (System/getenv "OBB_API_PORT") "8080"))})
+              ::bootstrap/port (Integer/parseInt (or (System/getenv "OBB_API_PORT")
+                                                     (System/getenv "PORT")
+                                                     "8080"))})
 
