@@ -4,6 +4,7 @@
             [io.pedestal.http.body-params :as body-params]
             [io.pedestal.http.route.definition :refer [defroutes]]
             [ring.util.response :as ring-resp]
+            [environ.core :refer [env]]
             [obb-api.handlers.index :as index]
             [obb-api.handlers.create-friendly :as create-friendly]
             [obb-api.handlers.show-game :as show-game]
@@ -37,6 +38,7 @@
      ["/auth/enforce" {:get auth-verify/enforce}
       ^:interceptors [auth-interceptor/enforce]]]]])
 
+
 ;; Consumed by obb-api.server/create-server
 ;; See bootstrap/default-interceptors for additional options you can configure
 (def service {:env :prod
@@ -64,5 +66,7 @@
               ;; Either :jetty, :immutant or :tomcat (see comments in project.clj)
               ::bootstrap/type :jetty
               ;;::bootstrap/host "localhost"
-              ::bootstrap/port (Integer/parseInt (get (System/getenv) "PORT" "8080"))})
+              ::bootstrap/port (Integer/parseInt (or (System/getenv "OBB_API_PORT")
+                                                     (System/getenv "PORT")
+                                                     "8080"))})
 
