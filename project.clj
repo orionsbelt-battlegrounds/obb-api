@@ -7,19 +7,19 @@
   ;:java-agents [[com.newrelic.agent.java/newrelic-agent "3.12.0"]]
 
   :dependencies [[org.clojure/clojure "1.6.0"]
-                 [clj-time "0.8.0"]
+                 [clj-time "0.9.0"]
                  [clj-jwt "0.0.11"]
                  [environ "1.0.0"]
                  [com.novemberain/monger "2.0.1"]
 
-                 [obb-rules "1.6"]
+                 [obb-rules "1.9"]
 
                  [io.pedestal/pedestal.service "0.3.1"]
                  [io.pedestal/pedestal.jetty "0.3.1"]
                  [ch.qos.logback/logback-classic "1.1.2" :exclusions [org.slf4j/slf4j-api]]
-                 [org.slf4j/jul-to-slf4j "1.7.7"]
-                 [org.slf4j/jcl-over-slf4j "1.7.7"]
-                 [org.slf4j/log4j-over-slf4j "1.7.7"]]
+                 [org.slf4j/jul-to-slf4j "1.7.9"]
+                 [org.slf4j/jcl-over-slf4j "1.7.9"]
+                 [org.slf4j/log4j-over-slf4j "1.7.9"]]
 
   :scm {:name "git"
         :url  "git@github.com:orionsbelt-battlegrounds/obb-api.git"}
