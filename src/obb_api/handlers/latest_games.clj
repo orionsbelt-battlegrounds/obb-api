@@ -11,7 +11,8 @@
   {:_id (get game :_id)
    :state (get-in game [:board :state])
    :p1 (get game :p1)
-   :p2 (get game :p2)})
+   :p2 (get game :p2)
+   :uri (str "/game/" (get game :_id))})
 
 (defn- trim-games
   "Returns a simple game info collection"
