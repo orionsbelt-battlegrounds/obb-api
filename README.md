@@ -71,7 +71,7 @@ curl -XGET http://api.orionsbelt.eu/player/latest-games?token=eyJhbGciOiJIUzI1Ni
 
 ### `POST /game/create/friendly` creates a friendly match
 
-Creates a match bettween two players. Returns the board ready to be deployed. You can specify per player starting stash.
+Creates a match bettween two players. Returns the board ready to be deployed. You can specify per player starting stash. The the `opponent` isn't provided, the game is opened and may me joined later.
 
 ```
 curl -XPOST http://api.orionsbelt.eu/game/create/friendly?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkb25ib25pZmFjaW8iLCJleHAiOjE0MTQ2MTYxMTIsImlhdCI6MTQxNDcwMjUxMn0.lisfjmr4ShsYJt2FX8FfJrQ828HVbPGFKF5BL9GMEbw \
@@ -86,6 +86,51 @@ curl -XPOST http://api.orionsbelt.eu/game/create/friendly?token=eyJhbGciOiJIUzI1
      -H "Content-Type: application/json" \
      -d '{"challenger" : "donbonifacio", "opponent" : "Pyro"}'
 ```
+```javascript
+{  
+   "battle":{  
+      "state":"deploy",
+      "stash":{  
+         "p2":{  
+            "anubis":100,
+            "heavy-seeker":25,
+            "nova":25,
+            "kamikaze":50,
+            "rain":100,
+            "scarab":50,
+            "worm":50,
+            "crusader":25
+         },
+         "p1":{  
+            "anubis":100,
+            "heavy-seeker":25,
+            "nova":25,
+            "kamikaze":50,
+            "rain":100,
+            "scarab":50,
+            "worm":50,
+            "crusader":25
+         }
+      },
+      "width":8,
+      "height":8,
+      "terrain":"terrest",
+      "elements":{}
+   },
+   "p2":{ "name":"Pyro" },
+   "p1":{ "name":"donbonifacio" },
+   "_id":"54565621300418dc8ed15cf1"
+}
+```
+
+### `PUT /game/:id/join` joins a friendly match
+
+When a game is created without an opponent, another player can join the game.
+
+```
+curl -XPUT http://api.orionsbelt.eu/game/some_id/join?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkb25ib25pZmFjaW8iLCJleHAiOjE0MTQ2MTYxMTIsImlhdCI6MTQxNDcwMjUxMn0.lisfjmr4ShsYJt2FX8FfJrQ828HVbPGFKF5BL9GMEbw
+```
+
 ```javascript
 {  
    "battle":{  
