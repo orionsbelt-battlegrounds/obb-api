@@ -46,13 +46,13 @@
     (is (= "EmptyChallenger" (response :error)))
     (is (= status 412))))
 
-(deftest create-friendly-fail-no-opponent-test
-  (let [data {:challenger "Pyro"}
+(deftest create-friendly-succeedes-no-opponent-test
+  (let [data {:challenger "donbonifacio"}
         [response status] (service/post-json "donbonifacio"
                                              "/game/create/friendly"
                                              data)]
-    (is (= "EmptyOpponent" (response :error)))
-    (is (= status 412))))
+    (println response)
+    (is (= status 201))))
 
 (deftest create-friendly-fail-no-opponent-exists-test
   (let [data {:challenger "Pyro" :opponent "Waza"}

@@ -21,15 +21,22 @@
   [request]
   (cond
     (nil? (request :json-params)) "InvalidJSON"
-    (nil? (opponent-name request)) "EmptyOpponent"
     (nil? (challenger-name request)) "EmptyChallenger"))
+
+(defn- invalid-opponent?
+  "True if an opponent's name is given, but no match to a player is possible"
+  [request opponent]
+  (and
+    (nil? opponent)
+    (not (clojure.string/blank? (opponent-name request)))))
 
 (defn- validate
   "Validates request data"
   [request challenger opponent]
+  (println (clojure.string/blank? (opponent-name request)))
   (cond
-    (nil? challenger) "InvalidChallenger"
-    (nil? opponent) "InvalidOpponent"))
+    (invalid-opponent? request opponent) "InvalidOpponent"
+    (nil? challenger) "InvalidChallenger"))
 
 (defn- save-game
   "Saves a game"
