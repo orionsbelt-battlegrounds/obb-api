@@ -51,7 +51,6 @@
         [response status] (service/post-json "donbonifacio"
                                              "/game/create/friendly"
                                              data)]
-    (println response)
     (is (= status 201))))
 
 (deftest create-friendly-fail-no-opponent-exists-test

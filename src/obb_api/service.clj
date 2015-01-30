@@ -9,6 +9,7 @@
             [obb-api.handlers.create-friendly :as create-friendly]
             [obb-api.handlers.show-game :as show-game]
             [obb-api.handlers.deploy-game :as deploy-game]
+            [obb-api.handlers.join-game :as join-game]
             [obb-api.handlers.latest-games :as latest-games]
             [obb-api.handlers.play-game :as play-game]
             [obb-api.handlers.auth.verify :as auth-verify]
@@ -24,6 +25,9 @@
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
      ["/game/create/friendly" {:post create-friendly/handler}
+      ^:interceptors [auth-interceptor/enforce body-params/body-params]]
+
+     ["/game/:id/join" {:put join-game/handler}
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
      ["/game/:id/deploy" {:put deploy-game/handler}

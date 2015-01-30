@@ -33,7 +33,6 @@
 (defn- validate
   "Validates request data"
   [request challenger opponent]
-  (println (clojure.string/blank? (opponent-name request)))
   (cond
     (invalid-opponent? request opponent) "InvalidOpponent"
     (nil? challenger) "InvalidChallenger"))
