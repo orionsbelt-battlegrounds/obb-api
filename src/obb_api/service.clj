@@ -12,11 +12,14 @@
             [obb-api.handlers.join-game :as join-game]
             [obb-api.handlers.latest-games :as latest-games]
             [obb-api.handlers.play-game :as play-game]
+            [obb-api.handlers.auth.anonymize :as auth-anonymize]
             [obb-api.handlers.auth.verify :as auth-verify]
             [obb-api.interceptors.auth-interceptor :as auth-interceptor]))
 
 (defroutes routes
   [[["/" {:get index/handler}
+
+     ["/auth/anonymize" {:get auth-anonymize/handler}]
 
      ["/auth/verify" {:get auth-verify/handler}
       ^:interceptors [auth-interceptor/parse]]
