@@ -7,6 +7,11 @@
   [args]
   (mongodb/create-battle args))
 
+(defn load-open-games
+  "Loads the open games for the lobby"
+  []
+  (mongodb/load-open-games))
+
 (defn load-latest
   "Loads the latest battles from the given username"
   [username]

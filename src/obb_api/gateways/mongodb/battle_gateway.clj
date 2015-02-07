@@ -33,6 +33,16 @@
   (-> (db)
       (mc/insert-and-return collection-name (build args))))
 
+(defn load-open-games
+  "Loads the open games for the lobby"
+  []
+  (-> (db)
+      (mq/with-collection collection-name
+          (mq/find {:$or [{:p2 nil} {:p2 {:name nil}} {:p2 {:name ""}}] })
+          (mq/sort (sorted-map :_id -1))
+          (mq/skip 0)
+          (mq/limit 10))))
+
 (defn load-latest-battles
   "Loads the latest battles from the given username"
   [username]

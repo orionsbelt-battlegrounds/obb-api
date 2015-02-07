@@ -11,6 +11,7 @@
             [obb-api.handlers.deploy-game :as deploy-game]
             [obb-api.handlers.join-game :as join-game]
             [obb-api.handlers.latest-games :as latest-games]
+            [obb-api.handlers.open-games :as open-games]
             [obb-api.handlers.play-game :as play-game]
             [obb-api.handlers.auth.anonymize :as auth-anonymize]
             [obb-api.handlers.auth.verify :as auth-verify]
@@ -23,6 +24,9 @@
 
      ["/auth/verify" {:get auth-verify/handler}
       ^:interceptors [auth-interceptor/parse]]
+
+     ["/lobby/open-games" {:get open-games/handler}
+      ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
      ["/player/latest-games" {:get latest-games/handler}
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
