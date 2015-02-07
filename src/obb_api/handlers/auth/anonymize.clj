@@ -7,7 +7,7 @@
 (defn anon-username?
   "True if the given username can me considered anonymous"
   [username]
-  (re-matches #"anonymous:.*" username))
+  (re-matches #"^anonymous:.*" username))
 
 (defn- validate
   "Validates if the username can be anonymized"
