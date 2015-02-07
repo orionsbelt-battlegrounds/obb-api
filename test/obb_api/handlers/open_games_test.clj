@@ -15,23 +15,14 @@
       (is game)
       (is (get game :starting-stash))
       (is (get-in game [:p1 :name]))
-      (is (nil? (get game :p2))))))
-
-(comment
-
-(deftest latest-games-smoke-p2
-  (let [[_ _] (create-friendly-test/create-dummy-game "donbonifacio" "Pyro")
-        [response status] (service/get-json "Pyro" (str "/player/latest-games"))]
-    (is (not (empty? response)))
-    (is (= 200 status))))
-
-(deftest latest-games-game-uri
-  (let [[_ _] (create-friendly-test/create-dummy-game "donbonifacio" "Pyro")
-        [response status] (service/get-json "donbonifacio" (str "/player/latest-games"))]
-    (is (not (empty? response)))
-    (is (= 200 status))
-    (let [sample-game (first response)
-          uri (sample-game :uri)]
-      (let [[response status] (service/get-json uri)]
-        (is (= 200 status))))))
-)
+      (is (nil? (get game :p2)))
+      (testing "if joining the game clears it from the lobby"
+        (let [game-id (game :_id)
+              join-url (str "/game/" game-id  "/join")
+              [response status] (service/put-json "Pyro" join-url "")]
+          (is (= 200 status))
+          (let [[response status] (service/get-json "donbonifacio" (str "/lobby/open-games"))]
+            (is (= 200 status))
+            (let [new-game (first response)]
+              (is new-game)
+              (is (not= (:_id game) (:_id new-game))))))))))
