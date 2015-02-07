@@ -3,6 +3,7 @@
   (:require [obb-api.response :as response]
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
+            [obb-api.handlers.auth.anonymize :as anonymize-handler]
             [obb-rules.stash :as stash]
             [obb-rules.game :as game]))
 
@@ -62,12 +63,19 @@
         (game/create))
     (game/random)))
 
+(defn- find-players
+  "Resolves the players by their name"
+  [p1-name p2-name]
+  (if (anonymize-handler/anon-username? p1-name)
+    [{:name p1-name}]
+    (player-gateway/find-players [p1-name p2-name])))
+
 (defn- create-game
   "Creates the game"
   [request]
   (let [p1 (challenger-name request)
         p2 (opponent-name request)
-        [challenger opponent] (player-gateway/find-players [p1 p2])
+        [challenger opponent] (find-players p1 p2)
         battle (create-battle request)]
     (if-let [error (validate request challenger opponent)]
       (response/json-error {:error error})

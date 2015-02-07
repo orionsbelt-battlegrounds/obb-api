@@ -53,6 +53,14 @@
                                              data)]
     (is (= status 201))))
 
+(deftest create-friendly-succeedes-anonymous-challenger-test
+  (let [user "anonymous:1423327516117-xbzirfw"
+        data {:challenger user}
+        [response status] (service/post-json user
+                                             "/game/create/friendly"
+                                             data)]
+    (is (= status 201))))
+
 (deftest create-friendly-fail-no-opponent-exists-test
   (let [data {:challenger "Pyro" :opponent "Waza"}
         [response status] (service/post-json "donbonifacio"
