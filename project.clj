@@ -4,8 +4,6 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
 
-  ;:java-agents [[com.newrelic.agent.java/newrelic-agent "3.12.0"]]
-
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [clj-time "0.9.0"]
                  [clj-jwt "0.0.11"]
@@ -27,7 +25,8 @@
   :min-lein-version "2.5.0"
   :resource-paths ["config", "resources"]
   :uberjar-name "obb-api.jar"
-  :profiles {:production {:env {:production true}}
+  :profiles {:production {:env {:production true}
+                          :java-agents [[com.newrelic.agent.java/newrelic-agent "3.12.0"]]}
              :uberjar {:aot :all}
              :dev
                {:plugins [[com.jakemccrary/lein-test-refresh "0.5.4"]
