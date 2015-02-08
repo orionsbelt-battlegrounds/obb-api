@@ -26,7 +26,7 @@
   :resource-paths ["config", "resources"]
   :uberjar-name "obb-api.jar"
   :profiles {:production {:env {:production true}
-                          :java-agents [[com.newrelic.agent.java/newrelic-agent "3.12.0"]]}
+                          :java-agents [[com.newrelic.agent.java/newrelic-agent "3.2.0"]]}
              :uberjar {:aot :all}
              :dev
                {:plugins [[com.jakemccrary/lein-test-refresh "0.5.4"]
