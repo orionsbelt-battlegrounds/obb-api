@@ -50,6 +50,10 @@ the player's token, the information specific to the given player will be present
 }
 ```
 
+### `GET /lobby/open-games` gets the games on the lobby
+
+Returns the games on the lobby, that may be joined by players.
+
 ### `GET /player/latest-games` lists latest created games
 
 Returns the last games created for the player with the provided token.
