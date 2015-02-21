@@ -49,7 +49,7 @@
   (-> (db)
       (mq/with-collection collection-name
           (mq/find {:$or [{:p1 {:name username}} {:p2 {:name username}}] })
-          (mq/sort (sorted-map :_id -1))
+          (mq/sort (sorted-map :updated-at -1 :_id -1))
           (mq/skip 00)
           (mq/limit 50))))
 

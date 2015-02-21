@@ -1,6 +1,7 @@
 (ns obb-api.core.turn-processor
   "Logic and validations regarding turn processing"
   (:require [obb-api.response :as response]
+            [clj-time.local :as l]
             [obb-api.handlers.show-game :as show-game]
             [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-api.core.turn-history :as history]
@@ -42,6 +43,7 @@
         (dissoc :viewed-by)
         (assoc :board (translate-board player-code result))
         (assoc-in [:board :action-results] action-results)
+        (assoc :updated-at (l/local-now))
         (assoc :success (sresult :success)))))
 
 (defn turn-error-response
