@@ -50,6 +50,10 @@ the player's token, the information specific to the given player will be present
 }
 ```
 
+### `GET /lobby/open-games` gets the games on the lobby
+
+Returns the games on the lobby, that may be joined by players.
+
 ### `GET /player/latest-games` lists latest created games
 
 Returns the last games created for the player with the provided token.
@@ -239,3 +243,13 @@ Given a token, will analyse it and output information about it, for example if i
 ### `GET /auth/enforce` enforces the OBB token
 
 The same interface as `/auth/verify` but will return a *401 Unauthorized* if the token is invalid.
+
+### `GET /auth/anonymize?username=:anon` generates a token for an anonymous user
+
+The `:anon` param must be in the format of `anonymous:<random_identifier>`.
+
+```javascript
+{
+   "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhbm9ueW1vdXM6MTQyMzc0NDc5Mzk4MC1qb2lsbXVpdnVwYiIsImV4cCI6MTQyNDYwODc5NCwiaWF0IjoxNDIzNzQ0Nzk0fQ.sAWiatJmuSnzXIm96VIa5sqH1gpvQlcto2ATMl0zZAE"
+}
+```
