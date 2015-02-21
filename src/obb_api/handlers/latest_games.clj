@@ -5,24 +5,20 @@
             [obb-api.handlers.show-game :as show-game]
             [obb-api.gateways.battle-gateway :as battle-gateway]))
 
-(defn- trim-game
-  "Simplifies a specific game"
+(defn- prepare-game
+  "Prepares a game to be returned"
   [game]
-  {:_id (get game :_id)
-   :state (get-in game [:board :state])
-   :p1 (get game :p1)
-   :p2 (get game :p2)
-   :uri (str "/game/" (get game :_id))})
+  (assoc game :uri (str "/game/" (get game :_id))))
 
-(defn- trim-games
-  "Returns a simple game info collection"
+(defn- prepare-games
+  "Prepares the games to be returned"
   [games]
-  (map trim-game games))
+  (map prepare-game games))
 
 (defn handler
   "Processes turn actions"
   [request]
   (-> (auth-interceptor/username request)
       (battle-gateway/load-latest)
-      (trim-games)
+      (prepare-games)
       (response/json-ok)))

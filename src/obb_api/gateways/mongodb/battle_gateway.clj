@@ -51,7 +51,7 @@
           (mq/find {:$or [{:p1 {:name username}} {:p2 {:name username}}] })
           (mq/sort (sorted-map :updated-at -1 :_id -1))
           (mq/skip 00)
-          (mq/limit 50))))
+          (mq/limit 10))))
 
 (defn load-battle
   "Loads a persisted battle"
