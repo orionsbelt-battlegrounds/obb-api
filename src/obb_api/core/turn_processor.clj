@@ -38,12 +38,12 @@
         new-board (sresult :board)
         new-game (assoc game :board (dissoc new-board :action-results))
         new-game-with-history (history/register new-game action-results)]
-    (battle-gateway/update-battle new-game-with-history)
     (-> new-game-with-history
+        (assoc :updated-at (l/local-now))
+        (battle-gateway/update-battle)
         (dissoc :viewed-by)
         (assoc :board (translate-board player-code result))
         (assoc-in [:board :action-results] action-results)
-        (assoc :updated-at (l/local-now))
         (assoc :success (sresult :success)))))
 
 (defn turn-error-response
