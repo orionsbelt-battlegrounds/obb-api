@@ -6,7 +6,7 @@
 
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [clj-time "0.9.0"]
-                 [clj-jwt "0.0.11"]
+                 [clj-jwt "0.0.12"]
                  [environ "1.0.0"]
                  [com.novemberain/monger "2.1.0"]
 
