@@ -29,16 +29,27 @@
 
 (defn- validate
   "Validates data for deploying"
-  [args]
+  [enforce-full-deploy? args]
   (cond
     (nil? (args :game)) ["InvalidGame" 404]
     (not (valid-player? args)) ["InvalidPlayer" 401]
     (nil? (get-in args [:data])) ["EmptyJSON" 412]
     (nil? (get-in args [:data :actions])) ["NoActions" 412]
     (= false ((args :processed) :success)) ["TurnFailed" 422]
-    (stash-still-has-units? args) ["StashNotCleared" 412]))
+    (and enforce-full-deploy? (stash-still-has-units? args)) ["StashNotCleared" 412]))
+
+(def validate-full-deploy (partial validate true))
+
+(def validate-partial-deploy (partial validate false))
 
 (defn handler
   "Processes deploy actions"
   [request]
-  (play-game/handler request {:validator validate}))
+  (play-game/handler request {:validator validate-full-deploy
+                              :save? true}))
+
+(defn simulator
+  "Simulates deploy actions"
+  [request]
+  (play-game/handler request {:validator validate-partial-deploy
+                              :save? false}))

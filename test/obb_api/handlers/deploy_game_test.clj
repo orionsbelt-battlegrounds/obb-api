@@ -68,6 +68,14 @@
     (is (= "StashNotCleared" (response :error)))
     (is (= status 412))))
 
+(deftest simulate-deploy-incomplete-test
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 1 :kamikaze [8 8]]]}
+        [response status] (service/put-json "donbonifacio"
+                                            (str "/game/" (game :_id)  "/deploy/simulate")
+                                            data)]
+    (is (= status 200))))
+
 (deftest deploy-success-test
   (let [[game _] (create-game)
         data {:actions [[:deploy 2 :kamikaze [8 8]]]}

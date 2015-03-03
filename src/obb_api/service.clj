@@ -37,6 +37,9 @@
      ["/game/:id/join" {:put join-game/handler}
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
+     ["/game/:id/deploy/simulate" {:put deploy-game/simulator}
+      ^:interceptors [auth-interceptor/enforce body-params/body-params]]
+
      ["/game/:id/deploy" {:put deploy-game/handler}
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
