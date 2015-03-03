@@ -31,23 +31,23 @@
 
 (defn handler
   "Processes turn actions"
-  [request]
-  (let [data (request :json-params)
-        battle-id (get-in request [:path-params :id])
-        game (battle-gateway/load-battle battle-id)
-        username (auth-interceptor/username request)
-        viewer (show-game/match-viewer game username)
-        processed (turn-processor/process-actions request game username)]
-    (if-let [[error error-status] (validate {:request request
-                                             :data data
-                                             :username username
-                                             :game game
-                                             :processed processed})]
-      (turn-processor/turn-error-response error error-status processed)
-      (response/json-ok (-> (turn-processor/save-game request
-                                                      game
-                                                      processed
-                                                      username)
-                            (show-game/add-username-info username viewer))))))
-
-
+  ([request]
+   (handler request validate))
+  ([request validator]
+   (let [data (request :json-params)
+         battle-id (get-in request [:path-params :id])
+         game (battle-gateway/load-battle battle-id)
+         username (auth-interceptor/username request)
+         viewer (show-game/match-viewer game username)
+         processed (turn-processor/process-actions request game username)]
+     (if-let [[error error-status] (validator {:request request
+                                              :data data
+                                              :username username
+                                              :game game
+                                              :processed processed})]
+       (turn-processor/turn-error-response error error-status processed)
+       (response/json-ok (-> (turn-processor/save-game request
+                                                       game
+                                                       processed
+                                                       username)
+                             (show-game/add-username-info username viewer)))))))
