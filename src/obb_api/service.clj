@@ -43,6 +43,9 @@
      ["/game/:id/deploy" {:put deploy-game/handler}
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 
+     ["/game/:id/turn/simulate" {:put play-game/simulator}
+      ^:interceptors [auth-interceptor/enforce body-params/body-params]]
+
      ["/game/:id/turn" {:put play-game/handler}
       ^:interceptors [auth-interceptor/enforce body-params/body-params]]
 

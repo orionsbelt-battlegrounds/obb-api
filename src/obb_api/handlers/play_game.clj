@@ -52,3 +52,8 @@
                                                        username
                                                        save?)
                              (show-game/add-username-info username viewer)))))))
+
+(defn simulator
+  "Simulates turn actions"
+  [request]
+    (handler request {:save? false}))

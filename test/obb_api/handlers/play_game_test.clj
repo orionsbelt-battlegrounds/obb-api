@@ -24,6 +24,15 @@
                      (str "/game/" (game :_id) "/turn")
                      data)))
 
+(defn- simulate-move
+  "Simulates a move on a game"
+  ([game data]
+   (simulate-move game data "donbonifacio"))
+  ([game data username]
+   (service/put-json username
+                     (str "/game/" (game :_id) "/turn/simulate")
+                     data)))
+
 (deftest play-game-smoke
   (let [game (create-game)
         [response status] (make-move game nil)]
@@ -86,8 +95,29 @@
                                      {:actions [[:move [7 7] [8 8] 1]]}
                                      "donbonifacio")]
     (is (response :viewed-by))
+    (is (= true (:saved response)))
     (is (= true (response :success)))
-    (is (= 200 status))))
+    (is (= 200 status))
+    (testing "get the game and check that the move was made"
+      (let [game-id (:_id game)
+            [response status] (service/get-json "donbonifacio" (str "/game/" game-id))]
+        (is (= status 200))
+        (is (= 1 (get-in response [:board :elements (keyword "[8 8]") :quantity])))))))
+
+(deftest simulate-single-action-success
+  (let [game (create-game)
+        [response status] (simulate-move game
+                                         {:actions [[:move [7 7] [8 8] 1]]}
+                                         "donbonifacio")]
+    (is (response :viewed-by))
+    (is (= true (response :success)))
+    (is (= false (response :saved)))
+    (is (= 200 status))
+    (testing "get the game and check that the move was *not* made"
+      (let [game-id (:_id game)
+            [response status] (service/get-json "donbonifacio" (str "/game/" game-id))]
+        (is (= status 200))
+        (is (nil? (get-in response [:board :elements (keyword "[8 8]")])))))))
 
 (deftest make-complete-actions-success
   (let [game (create-game)
