@@ -32,8 +32,8 @@
 (defn handler
   "Processes turn actions"
   ([request]
-   (handler request validate))
-  ([request validator]
+   (handler request {}))
+  ([request {:keys [:validator :save?] :or {:validator validate :save? true}}]
    (let [data (request :json-params)
          battle-id (get-in request [:path-params :id])
          game (battle-gateway/load-battle battle-id)
@@ -49,5 +49,6 @@
        (response/json-ok (-> (turn-processor/save-game request
                                                        game
                                                        processed
-                                                       username)
+                                                       username
+                                                       save?)
                              (show-game/add-username-info username viewer)))))))

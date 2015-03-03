@@ -24,5 +24,9 @@
 
 (defn update-battle
   "Updates a battle given a result"
-  [game]
-  (mongodb/update-battle game))
+  ([game]
+   (update-battle game true))
+  ([game save?]
+   (if save?
+    (mongodb/update-battle game)
+    game)))

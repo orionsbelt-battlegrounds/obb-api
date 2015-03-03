@@ -31,7 +31,7 @@
 
 (defn save-game
   "Saves a game after turn processing"
-  [request game result username]
+  [request game result username save?]
   (let [sresult (simplify/clean-result result)
         player-code (show-game/match-viewer game username)
         action-results (get-in sresult [:board :action-results])
@@ -40,7 +40,7 @@
         new-game-with-history (history/register new-game action-results)]
     (-> new-game-with-history
         (assoc :updated-at (l/local-now))
-        (battle-gateway/update-battle)
+        (battle-gateway/update-battle save?)
         (dissoc :viewed-by)
         (assoc :board (translate-board player-code result))
         (assoc-in [:board :action-results] action-results)

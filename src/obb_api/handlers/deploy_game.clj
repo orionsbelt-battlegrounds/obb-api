@@ -41,4 +41,4 @@
 (defn handler
   "Processes deploy actions"
   [request]
-  (play-game/handler request validate))
+  (play-game/handler request {:validator validate}))
