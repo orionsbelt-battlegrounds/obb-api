@@ -83,10 +83,34 @@
                                             (str "/game/" (game :_id)  "/deploy")
                                             data)]
     (is (= true (response :success)))
+    (is (= true (response :saved)))
     (is (response :viewed-by))
     (is (= "donbonifacio" (get-in response [:viewed-by :username])))
     (is (= "p1" (get-in response [:viewed-by :player-code])))
-    (is (= status 200))))
+    (is (= status 200))
+    (testing "get the game and check that the stash cleared for p1"
+      (let [game-id (:_id game)
+            [response status] (service/get-json "donbonifacio" (str "/game/" game-id))]
+        (is (= status 200))
+        (is (empty? (get-in response [:board :stash :p1])))))))
+
+(deftest simulate-deploy-success-test
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 2 :kamikaze [8 8]]]}
+        [response status] (service/put-json "donbonifacio"
+                                            (str "/game/" (game :_id)  "/deploy/simulate")
+                                            data)]
+    (is (= true (response :success)))
+    (is (= false (response :saved)))
+    (is (response :viewed-by))
+    (is (= "donbonifacio" (get-in response [:viewed-by :username])))
+    (is (= "p1" (get-in response [:viewed-by :player-code])))
+    (is (= status 200))
+    (testing "get the game and check that the stash is still present"
+      (let [game-id (:_id game)
+            [response status] (service/get-json "donbonifacio" (str "/game/" game-id))]
+        (is (= status 200))
+        (is (= 2 (get-in response [:board :stash :p1 :kamikaze])))))))
 
 (deftest deploy-success-2-actions-test
   (let [[game _] (create-game)

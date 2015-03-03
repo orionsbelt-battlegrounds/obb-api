@@ -41,6 +41,7 @@
     (-> new-game-with-history
         (assoc :updated-at (l/local-now))
         (battle-gateway/update-battle save?)
+        (assoc :saved save?)
         (dissoc :viewed-by)
         (assoc :board (translate-board player-code result))
         (assoc-in [:board :action-results] action-results)
