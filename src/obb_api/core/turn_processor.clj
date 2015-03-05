@@ -11,14 +11,15 @@
 
 (defn process-actions
   "Applies the actions to the game's battle"
-  [request game username]
+  [request game username save?]
   (when game
     (let [actions (get-in request [:json-params :actions])
           player-code (show-game/match-viewer game username)
           translated-actions (translator/actions player-code actions)
           built-game (simplify/build-result game)
-          battle (built-game :board)]
-      (apply turn/process battle player-code translated-actions))))
+          battle (built-game :board)
+          process-fn (if save? turn/process-actions turn/simulate-actions)]
+      (process-fn battle player-code translated-actions))))
 
 (defn- translate-board
   "Translates the board to the given player focus"

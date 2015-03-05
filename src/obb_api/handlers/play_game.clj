@@ -39,7 +39,7 @@
          game (battle-gateway/load-battle battle-id)
          username (auth-interceptor/username request)
          viewer (show-game/match-viewer game username)
-         processed (turn-processor/process-actions request game username)]
+         processed (turn-processor/process-actions request game username save?)]
      (if-let [[error error-status] (validator {:request request
                                               :data data
                                               :username username
@@ -56,4 +56,4 @@
 (defn simulator
   "Simulates turn actions"
   [request]
-    (handler request {:save? false}))
+  (handler request {:save? false}))

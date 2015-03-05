@@ -52,7 +52,6 @@
         username (auth-interceptor/username request)
         viewer (match-viewer game username)]
     (if game
-
       (-> (prepare-game request built-game viewer)
           (simplify/clean-result)
           (add-username-info username viewer)

@@ -112,11 +112,13 @@
     (is (response :viewed-by))
     (is (= true (response :success)))
     (is (= false (response :saved)))
+    (is (= "p1" (get-in response [:board :state])))
     (is (= 200 status))
     (testing "get the game and check that the move was *not* made"
       (let [game-id (:_id game)
             [response status] (service/get-json "donbonifacio" (str "/game/" game-id))]
         (is (= status 200))
+        (is (= "p1" (get-in response [:board :state])))
         (is (nil? (get-in response [:board :elements (keyword "[8 8]")])))))))
 
 (deftest make-complete-actions-success
