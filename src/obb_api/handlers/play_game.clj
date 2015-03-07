@@ -9,6 +9,7 @@
             [obb-rules.game :as game]
             [obb-rules.simplifier :as simplify]
             [obb-rules.translator :as translator]
+            [obb-rules.privatize :as privatize]
             [obb-rules.turn :as turn]))
 
 (defn- valid-player?
@@ -28,6 +29,18 @@
     (not (valid-player? args)) ["InvalidPlayer" 401]
     (nil? (get-in args [:data :actions])) ["NoActions" 412]
     (= false ((args :processed) :success)) ["TurnFailed" 422]))
+
+(defn- privatize
+  "Privatizes the response"
+  [response viewer]
+  (assoc response :board (privatize/game (:board response) viewer)))
+
+(defn- build-and-privatize
+  "Builds the response to be privatized"
+  [response viewer]
+  (-> (simplify/build-result response)
+      (privatize viewer)
+      (simplify/clean-result)))
 
 (defn handler
   "Processes turn actions"
@@ -51,6 +64,8 @@
                                                        processed
                                                        username
                                                        save?)
+                             (dissoc :starting-stash)
+                             (build-and-privatize viewer)
                              (show-game/add-username-info username viewer)))))))
 
 (defn simulator
