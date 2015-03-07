@@ -38,7 +38,9 @@
 (defn- build-and-privatize
   "Builds the response to be privatized"
   [response viewer]
-  (-> (simplify/build-result response)
+  (-> response
+      (dissoc :starting-stash)
+      (simplify/build-result)
       (privatize viewer)
       (simplify/clean-result)))
 
@@ -64,7 +66,6 @@
                                                        processed
                                                        username
                                                        save?)
-                             (dissoc :starting-stash)
                              (build-and-privatize viewer)
                              (show-game/add-username-info username viewer)))))))
 

@@ -22,8 +22,8 @@
                                               data)
         data {:actions [[:deploy 2 :kamikaze [7 7]]]}
         [response2 status2] (service/put-json "donbonifacio"
-                                             (str "/game/" (game :_id)  "/deploy")
-                                             data)]
+                                              (str "/game/" (game :_id)  "/deploy")
+                                              data)]
     [response2 status2]))
 
 (deftest error-if-no-actions-test
@@ -152,6 +152,20 @@
     (is (= show-status 200))))
 
 (deftest deploy-success-p1-viewed-by-p1
+  (let [[game _] (create-game)
+        data {:actions [[:deploy 2 :kamikaze [8 8]]]}
+        [response status] (service/put-json "donbonifacio"
+                                            (str "/game/" (game :_id)  "/deploy")
+                                            data)
+        [show show-status] (service/get-json "donbonifacio" (str "/game/" (game :_id)))]
+    (is (get-in show [:board :elements]))
+    (testing "game was cleaned"
+      (is (= "kamikaze" (get-in show [:board :elements (keyword "[8 8]") :unit]))))
+    (is (show :viewed-by))
+    (is (= show-status 200))))
+
+
+(deftest deploy-simulate-privatizes-response
   (let [[game _] (create-game)
         data {:actions [[:deploy 2 :kamikaze [8 8]]]}
         [response status] (service/put-json "donbonifacio"
