@@ -30,6 +30,13 @@
         simplified (simplify/clean-result translated-result)]
     (simplified :board)))
 
+(defn- translate-results
+  "Translates the results fo the view of the player"
+  [viewer action-results]
+  (map (fn translate-results [[action info]]
+         [(translator/action viewer action) info])
+       action-results))
+
 (defn save-game
   "Saves a game after turn processing"
   [request game result username save?]
@@ -45,7 +52,7 @@
         (assoc :saved save?)
         (dissoc :viewed-by)
         (assoc :board (translate-board player-code result))
-        (assoc-in [:board :action-results] action-results)
+        (assoc-in [:board :action-results] (translate-results player-code action-results))
         (assoc :success (sresult :success)))))
 
 (defn turn-error-response
