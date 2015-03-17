@@ -43,6 +43,13 @@
                             :player-code viewer})
     game))
 
+(defn add-move-hints
+  "Adds to the given hash hints to use to move the elements"
+  [response game viewer]
+  (if (and viewer (simplify/name= viewer (get-in game [:board :state])))
+    (assoc response :move-hints {})
+    response))
+
 (defn handler
   "Shows a game's info"
   [request]
@@ -55,5 +62,6 @@
       (-> (prepare-game request built-game viewer)
           (simplify/clean-result)
           (add-username-info username viewer)
+          (add-move-hints built-game viewer)
           (response/json-ok))
       (response/json-not-found))))
