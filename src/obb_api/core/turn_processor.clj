@@ -5,6 +5,7 @@
             [obb-api.handlers.show-game :as show-game]
             [obb-api.gateways.battle-gateway :as battle-gateway]
             [obb-api.core.turn-history :as history]
+            [obb-api.core.hints :as hints]
             [obb-rules.translator :as translator]
             [obb-rules.simplifier :as simplify]
             [obb-rules.turn :as turn]))
@@ -53,6 +54,7 @@
         (dissoc :viewed-by)
         (assoc :board (translate-board player-code result))
         (assoc-in [:board :action-results] (translate-results player-code action-results))
+        (assoc :hints (hints/for-game new-game player-code))
         (assoc :success (sresult :success)))))
 
 (defn turn-error-response

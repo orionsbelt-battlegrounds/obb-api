@@ -4,7 +4,9 @@
             [obb-api.interceptors.auth-interceptor :as auth-interceptor]
             [obb-api.gateways.player-gateway :as player-gateway]
             [obb-api.gateways.battle-gateway :as battle-gateway]
+            [obb-api.core.hints :as hints]
             [obb-rules.game :as game]
+            [obb-rules.board :as board]
             [obb-rules.simplifier :as simplify]
             [obb-rules.translator :as translator]
             [obb-rules.privatize :as privatize]))
@@ -43,13 +45,6 @@
                             :player-code viewer})
     game))
 
-(defn add-move-hints
-  "Adds to the given hash hints to use to move the elements"
-  [response game viewer]
-  (if (and viewer (simplify/name= viewer (get-in game [:board :state])))
-    (assoc response :hints {})
-    response))
-
 (defn handler
   "Shows a game's info"
   [request]
@@ -62,6 +57,6 @@
       (-> (prepare-game request built-game viewer)
           (simplify/clean-result)
           (add-username-info username viewer)
-          (add-move-hints built-game viewer)
+          (assoc :hints (hints/for-game built-game viewer))
           (response/json-ok))
       (response/json-not-found))))
