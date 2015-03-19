@@ -47,7 +47,7 @@
   "Adds to the given hash hints to use to move the elements"
   [response game viewer]
   (if (and viewer (simplify/name= viewer (get-in game [:board :state])))
-    (assoc response :move-hints {})
+    (assoc response :hints {})
     response))
 
 (defn handler
