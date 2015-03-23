@@ -119,6 +119,7 @@
       (let [game-id (:_id game)
             [response status] (service/get-json "donbonifacio" (str "/game/" game-id))]
         (is (= status 200))
+        (is (< 0 (count (get-in response [:hints]))))
         (is (= "p1" (get-in response [:board :state])))
         (is (nil? (get-in response [:board :elements (keyword "[8 8]")])))))))
 
