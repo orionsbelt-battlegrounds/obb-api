@@ -113,7 +113,6 @@
     (is (= true (response :success)))
     (is (= false (response :saved)))
     (is (< 0 (count (get-in response [:hints]))))
-    (println response)
     (is (= "p1" (get-in response [:board :state])))
     (is (= 200 status))
     (testing "get the game and check that the move was *not* made"

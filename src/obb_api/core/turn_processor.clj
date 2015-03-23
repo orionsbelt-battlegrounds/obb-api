@@ -54,7 +54,7 @@
         (dissoc :viewed-by)
         (assoc :board (translate-board player-code result))
         (assoc-in [:board :action-results] (translate-results player-code action-results))
-        (assoc :hints (hints/for-game new-game player-code))
+        (assoc :hints (hints/for-game (simplify/build-result game) player-code))
         (assoc :success (sresult :success)))))
 
 (defn turn-error-response
