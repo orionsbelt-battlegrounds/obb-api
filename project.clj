@@ -22,11 +22,15 @@
   :scm {:name "git"
         :url  "git@github.com:orionsbelt-battlegrounds/obb-api.git"}
 
+  :aliases {"all" ["with-profile" "dev:1.6:1.7" "test"]}
+
   :min-lein-version "2.5.0"
   :resource-paths ["config", "resources"]
   :uberjar-name "obb-api.jar"
   :profiles {:production {:env {:production true}
                           :java-agents [[com.newrelic.agent.java/newrelic-agent "3.2.0"]]}
+             :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha5"]]}
+             :1.6 {:dependencies [[org.clojure/clojure "1.6.0"]]}
              :uberjar {:aot :all}
              :dev
                {:plugins [[com.jakemccrary/lein-test-refresh "0.5.4"]
